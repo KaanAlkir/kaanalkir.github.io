@@ -6,8 +6,10 @@ title: Kaan Alkır # the website title (if blank, full name will be used instead
 first_name: Ş.
 middle_name: Kaan
 last_name: Alkır
-contact_note: > Best way to reach me is via email for academic queries.
-description: > Website of Ş. Kaan Alkır. Research in Reinforcement Learning, Mean-Field Games, and AI theory.
+contact_note: > 
+  Best way to reach me is via email for academic queries.
+description: > 
+  Website of Ş. Kaan Alkır. Research in Reinforcement Learning, Mean-Field Games, and AI theory.
 footer_text: > 
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
