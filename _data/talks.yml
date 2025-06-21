@@ -27,7 +27,7 @@
     complexity analysis are also discussed. The algorithm’s
     runtime of $\mathcal{O}(N)$ demonstrates the significant
     advantage of quantum computation in search problems.
-  image: "/assets/img/1.jpg"
+  image: "/assets/img/talk_grover.jpg"
   file: "/assets/pdf/Grover Search Presentation.pdf"
 
 - releaseDate: "2025-06-24"
