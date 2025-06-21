@@ -1,13 +1,11 @@
 # List your talks here.
 # Fields: releaseDate (YYYY-MM-DD), title, venue, abstract, file (optional)
 
-- releaseDate: "2025-06-10"
-  title: "On Average-Cost Inverse Reinforcement Learning in Mean-Field Games"
-  venue: "Reinforcement Learning Seminar, Bilkent University"
+- releaseDate: "2025-04-22"
+  title: "Reinforcement Learning for Mean-field Games with Average Reward Criterion"
+  venue: "Analysis Seminar, Bilkent University"
   abstract: >
-    We present a novel average-cost inverse reinforcement learning framework
-    for mean-field games, deriving consistency conditions between expert
-    occupancy measures and optimal policies.
+    We study the inverse reinforcement learning (IRL) problem for discrete-time, infinite-horizon mean-field games (MFG) with an average-reward criterion. Unlike the forward setting, where the reward function is known, IRL assumes access only to expert demonstrations that are optimal under some unknown reward function. The objective is to recover the reward structure that explains these expert behaviors. Our approach is based on the maximum causal entropy principle, which selects the least biased policy among those consistent with the observed demonstrations. We show that the resulting non-convex formulation is equivalently reformulated as a convex optimization problem over occupation measures. Furthermore, we establish that the dual objective is smooth and strongly convex over compact sets and derive a variational representation using a log-partition formulation. Finally, we propose a first-order algorithm for solving the dual problem and recovering an entropy-maximizing equilibrium policy.
   file: "/assets/files/talks/mfg-irl-seminar.pdf"
   image: "/assets/img/1.jpg"
   
