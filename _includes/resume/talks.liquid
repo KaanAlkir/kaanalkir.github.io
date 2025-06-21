@@ -51,10 +51,8 @@
 .talk-actions {
   display: flex;
   align-items: center;
+  gap: 1rem;
   margin-top: 0.5rem;
-}
-.bib-button {
-  margin-left: auto;
 }
 </style>
 
@@ -62,7 +60,7 @@
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.read-more').forEach(button => {
       button.addEventListener('click', () => {
-        const text = button.parentElement.previousElementSibling;
+        const text = button.previousElementSibling;
         text.classList.toggle('expanded');
         button.textContent = text.classList.contains('expanded') ? 'Read Less' : 'Read More';
       });
@@ -70,7 +68,6 @@
   });
 </script>
 
-{% comment %} Sort talks globally by releaseDate descending, then group by year {% endcomment %}
 {% assign sorted_talks = site.data.talks | sort: "releaseDate" | reverse %}
 {% assign talks_by_year = sorted_talks | group_by_exp: "talk", "talk.releaseDate | date: '%Y'" %}
 
@@ -90,12 +87,7 @@
           <div class="flex-fill">
             <h6 class="talk-title">{{ talk.title }}</h6>
             {% if talk.venue %}
-              <h6 style="font-size:0.95rem; margin:0.25rem 0;">
-                {{ talk.venue }}
-                <span class="text-muted" style="margin-left:0.5rem;font-size:0.85rem;">
-                  {{ formatted_date }}
-                </span>
-              </h6>
+              <h6 style="font-size:0.95rem; margin:0.25rem 0;">{{ talk.venue }} <span class="text-muted" style="margin-left:0.5rem;font-size:0.85rem;">{{ formatted_date }}</span></h6>
             {% endif %}
             {% if talk.abstract %}
               <div class="abstract-text">{{ talk.abstract }}</div>
@@ -106,9 +98,7 @@
                   <button class="read-more">Read More</button>
                 {% endif %}
                 {% if talk.file %}
-                  <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF">
-                    <i class="ti ti-file-text"></i> Resource
-                  </a>
+                  <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF"><i class="ti ti-file-text"></i> Resource</a>
                 {% endif %}
               </div>
             {% endif %}
