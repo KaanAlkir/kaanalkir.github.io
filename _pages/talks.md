@@ -1,9 +1,12 @@
 ---
 ---
-layout: talks
----
+layout: publications
 title: Talks
 permalink: /talks/
+nav: true
+nav_order: 4    # choose the slot you want it in
+---
+
 ---
 
 # Talks
