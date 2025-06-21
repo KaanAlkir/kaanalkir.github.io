@@ -10,4 +10,4 @@ nav_order: 4
 {% comment %}
 Include the list‐group design for Talks
 {% endcomment %}
-{% include _includes/resume/talks.liquid %}
+{% include resume/talks.liquid %}
