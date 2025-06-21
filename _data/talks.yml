@@ -48,5 +48,5 @@
     measures. We derive a dual formulation that is smooth and strongly
     convex, and propose a first-order solution method that recovers an
     equilibrium policy consistent with the observed data.
-  image: "/assets/img/talks_stocastic_days.JPG"
+  image: "/assets/img/talks_stocastic_days.jpg"
   file: "/assets/pdf/Stochastic Days 2025.pdf"
