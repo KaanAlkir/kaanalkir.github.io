@@ -1,0 +1,20 @@
+# List your talks here. Fields: title, authors (list), venue, year, categories (list), image (path), bib (optional)
+- title: "On Average-Cost Inverse Reinforcement Learning in Mean-Field Games"
+  authors:
+    - "Kaan Alkır"
+  venue: "Reinforcement Learning Seminar, Bilkent University"
+  year: 2025
+  categories:
+    - "Invited"
+  image: "/assets/images/talks/mfg-irl-seminar.jpg"
+  bib: "/talks/mfg-irl-seminar.bib"
+
+- title: "Kernel-Based Methods for Inverse Reinforcement Learning"
+  authors:
+    - "Kaan Alkır"
+  venue: "IEEE Conference on Decision and Control"
+  year: 2025
+  categories:
+    - "Conference"
+  image: "/assets/images/talks/birl-kernel-cdc.jpg"
+  bib: "/talks/birl-kernel-cdc.bib"
