@@ -3,7 +3,7 @@ Customized footer: removed footer_text to disable theme credit banner
 {% endcomment %}
 
 {% capture footer_contents %}
-  &copy; Copyright {{ site.time | date: '%Y' }}
+  {{ site.time | date: '%Y' }}
   {{ site.first_name }}
   {{ site.middle_name }}
   {{ site.last_name }}.
