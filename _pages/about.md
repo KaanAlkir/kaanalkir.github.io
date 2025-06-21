@@ -30,4 +30,11 @@ I'm a mathematics MSc student at Bilkent University and an academic assistant wo
 
 I completed my Bachelor's degree at Ankara University and have contributed to multiple academic projects and teaching efforts. Currently, I am preparing for a PhD in artificial intelligence, with a strong focus on mathematical modeling.
 
+## 🔬 Research Interests
+
+- Inverse Reinforcement Learning (IRL)
+- Mean-Field Games and control
+- Kernel methods in AI
+- Variational optimization
+- Quantum computing (curiosity-driven)
 
