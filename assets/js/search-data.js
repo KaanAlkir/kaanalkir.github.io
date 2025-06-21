@@ -32,7 +32,7 @@ ninja.data = [{
           },
         },{id: "nav-talks",
           title: "Talks",
-          description: "talks by categories in reversed chronological order.",
+          description: "Talks grouped by year in reversed chronological order.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/talks/";
