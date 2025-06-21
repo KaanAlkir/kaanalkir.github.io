@@ -21,7 +21,7 @@
   <hr style="border:none;border-bottom:1px solid rgba(255,255,255,0.2);margin:0.5rem 0;">
   <ul class="card-text font-weight-light list-group list-group-flush talks-list">
     {% for talk in group.items %}
-      {% assign formatted_date = talk.releaseDate | date: "%d.%B.%Y" %}
+      {% assign formatted_date = talk.releaseDate | date: "%d %B" %}
       <li class="list-group-item" style="background: transparent!important; border: none!important;">
         <div class="d-flex align-items-start">
           <!-- Thumbnail Column -->
