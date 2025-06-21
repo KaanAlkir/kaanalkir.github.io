@@ -3,9 +3,6 @@ Customized footer: removed footer_text to disable theme credit banner
 {% endcomment %}
 
 {% capture footer_contents %}
-  {{ site.first_name }}
-  {{ site.middle_name }}
-  {{ site.last_name }}.
   {%- comment -%} {{ site.footer_text }} {% endcomment %}
   {% if site.impressum_path %}
     <a href="{{ site.url }}{{ site.baseurl }}{{ site.impressum_path }}">Impressum</a>.
