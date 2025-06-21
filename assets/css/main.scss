@@ -23,3 +23,8 @@ $max-content-width: {{ site.max_width }};
   "tabler-icons/tabler-icons-filled.scss",
   "tabler-icons/tabler-icons-outline.scss"
 ;
+
+/* hide the theme credit banner */
+.site-footer__attribution {
+  display: none !important;
+}
