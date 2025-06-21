@@ -1,3 +1,12 @@
+<style>
+.talk-thumbnail {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+}
+</style>
+
 {% assign talks_by_year = site.data.talks | group_by_exp: "talk", "talk.releaseDate | date: '%Y'" %}
 
 {% for group in talks_by_year | sort: "name" | reverse %}
@@ -7,8 +16,9 @@
     {% for talk in group.items %}
       {% assign formatted_date = talk.releaseDate | date: "%d.%B.%Y" %}
       <li class="list-group-item" style="background: transparent!important; border: none!important;">
-        <div class="row">
-          <div class="col-xs-10 col-sm-10 col-md-10 mt-2 mt-md-0">
+        <div class="row align-items-center">
+          <div class="col-10">
+            <!-- Title -->
             <h6 class="title font-weight-bold ml-1 ml-md-4">
               {% if talk.file %}
                 <a href="{{ talk.file | relative_url }}">{{ talk.title }}</a>
@@ -16,7 +26,7 @@
                 {{ talk.title }}
               {% endif %}
             </h6>
-
+            <!-- Venue and Date -->
             {% if talk.venue %}
               <h6 class="ml-1 ml-md-4" style="font-size:0.95rem;">
                 {{ talk.venue }}
@@ -25,17 +35,22 @@
                 </span>
               </h6>
             {% endif %}
-
+            <!-- Abstract -->
             {% if talk.abstract %}
               <h6 class="ml-1 ml-md-4" style="font-size:0.95rem;font-style:italic;">
                 {{ talk.abstract }}
               </h6>
             {% endif %}
-
+            <!-- PDF Icon -->
             {% if talk.file %}
               <a href="{{ talk.file | relative_url }}" class="bib-button ml-1 ml-md-4" title="Download PDF">
                 <i class="ti ti-file-text"></i>
               </a>
+            {% endif %}
+          </div>
+          <div class="col-2 text-right">
+            {% if talk.image %}
+              <img src="{{ talk.image | relative_url }}" alt="{{ talk.title }}" class="talk-thumbnail">
             {% endif %}
           </div>
         </div>
