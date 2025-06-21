@@ -34,7 +34,7 @@
   font-style: italic;
   margin-bottom: 0.5rem;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -53,9 +53,6 @@
   justify-content: flex-end;
   margin-top: 0.5rem;
 }
-.bib-button {
-  /* existing styles */
-}
 </style>
 
 <script>
@@ -70,7 +67,9 @@
   });
 </script>
 
-{% assign talks_by_year = site.data.talks | group_by_exp: "talk", "talk.releaseDate | date: '%Y'" %}
+{% comment %} Sort talks globally by releaseDate descending, then group by year {% endcomment %}
+{% assign sorted_talks = site.data.talks | sort: "releaseDate" | reverse %}
+{% assign talks_by_year = sorted_talks | group_by_exp: "talk", "talk.releaseDate | date: '%Y'" %}
 
 {% for group in talks_by_year | sort: "name" | reverse %}
   <div class="publications-year">{{ group.name }}</div>
