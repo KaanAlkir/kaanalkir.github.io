@@ -2,43 +2,44 @@
 layout: page
 permalink: /talks/
 title: Talks
-description: Talks grouped by year in reversed chronological order.
+description: Talks by categories in reversed chronological order.
 nav: true
-nav_order: 3
+nav_order: 4
 ---
 
-{% assign talks_by_year = site.data.talks | group_by: "year" %}
-{% for group in talks_by_year reversed %}
-## {{ group.name }}
-
-<div class="publications">
-  {% for talk in group.items %}
-    <div class="publication">
-      {% if talk.image %}
-        <img src="{{ talk.image | relative_url }}" alt="{{ talk.title }}" class="publication-img"/>
-      {% endif %}
-      
-      <h3 class="publication-title">{{ talk.title }}</h3>
-      <p class="publication-meta">
-        {{ talk.date }} — {{ talk.location }}
-      </p>
-
-      {% if talk.authors %}
-        <p class="publication-authors">
-          {{ talk.authors | join: ", " }}
-        </p>
-      {% endif %}
-
-      {% if talk.abstract %}
-        <p class="publication-abstract">
-          {{ talk.abstract }}
-        </p>
-      {% endif %}
-
-      {% if talk.file %}
-        <a href="{{ talk.file | relative_url }}" class="bib-button">PDF</a>
-      {% endif %}
-    </div>
+<ul class="card-text font-weight-light list-group list-group-flush">
+  {% assign talks = site.data.talks | sort: 'date' | reverse %}
+  {% for talk in talks %}
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 text-center date-column">
+          {% if talk.date %} {% assign date = talk.date | split: '-' | join: '.' %} {% else %} {% assign date = '' %} {% endif %}
+          <table class="table-cv">
+            <tbody>
+              <tr>
+                <td>
+                  <span class="badge font-weight-bold danger-color-dark text-uppercase align-middle" style="min-width: 75px">{{ date }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-xs-10 col-sm-10 col-md-10 mt-2 mt-md-0">
+          <h6 class="title font-weight-bold ml-1 ml-md-4">
+            {% if talk.file %}
+              <a href="{{ talk.file | relative_url }}">{{ talk.title }}</a>
+            {% else %}
+              {{ talk.title }}
+            {% endif %}
+          </h6>
+          {% if talk.location %}
+            <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem">{{ talk.location }}</h6>
+          {% endif %}
+          {% if talk.abstract %}
+            <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem; font-style: italic">{{ talk.abstract }}</h6>
+          {% endif %}
+        </div>
+      </div>
+    </li>
   {% endfor %}
-</div>
-{% endfor %}
+</ul>
