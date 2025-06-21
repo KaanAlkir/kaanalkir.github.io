@@ -1,7 +1,7 @@
 <style>
 .talk-image-col {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   overflow: hidden;
   flex: 0 0 auto;
   margin-right: 1rem;
@@ -58,7 +58,7 @@
 
             {% if talk.file %}
               <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF">
-                Resource <i class="ti ti-file-text"></i>
+                <strong>Resource</strong> <i class="ti ti-file-text"></i>
               </a>
             {% endif %}
           </div>
