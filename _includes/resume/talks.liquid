@@ -12,46 +12,73 @@
   object-fit: cover;
   border-radius: 0.25rem;
 }
-/* Title styling: bold and customizable color */
 .talk-title {
   font-weight: bold;
-  color: var(--global-theme-color); /* override --talk-title-color in your CSS */
+  color: var(--global-theme-color);
   margin-bottom: 0.5rem;
 }
-  .publications-year {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--global-text-color);
-    margin-top: 2.5rem;
-    margin-bottom: 0.45rem;
-  }
+.publications-year {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--global-text-color);
+  margin-top: 2.5rem;
+  margin-bottom: 0.45rem;
+}
+.year-separator {
+  border: none;
+  border-bottom: 1px solid var(--global-text-color);
+  margin: 0.5rem 0;
+}
+.abstract-text {
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.abstract-text.expanded {
+  -webkit-line-clamp: unset;
+}
+.read-more {
+  background: none;
+  border: none;
+  color: var(--global-theme-color);
+  cursor: pointer;
+  padding: 0;
+}
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.read-more').forEach(button => {
+      button.addEventListener('click', () => {
+        const text = button.previousElementSibling;
+        text.classList.toggle('expanded');
+        button.textContent = text.classList.contains('expanded') ? 'Read Less' : 'Read More';
+      });
+    });
+  });
+</script>
 
 {% assign talks_by_year = site.data.talks | group_by_exp: "talk", "talk.releaseDate | date: '%Y'" %}
 
 {% for group in talks_by_year | sort: "name" | reverse %}
   <div class="publications-year">{{ group.name }}</div>
-  <hr style="border:none;border-bottom:1px solid var(--global-text-color);margin:0.5rem 0;">
+  <hr class="year-separator">
   <ul class="card-text font-weight-light list-group list-group-flush talks-list">
     {% for talk in group.items %}
       {% assign formatted_date = talk.releaseDate | date: "%d %B" %}
       <li class="list-group-item" style="background: transparent!important; border: none!important;">
         <div class="d-flex align-items-start">
-          <!-- Thumbnail Column -->
           <div class="talk-image-col">
             {% if talk.image %}
               <img src="{{ talk.image | relative_url }}" alt="{{ talk.title }}" class="talk-thumbnail">
             {% endif %}
           </div>
-
-          <!-- Content Column -->
           <div class="flex-fill">
-            <!-- Title -->
-            <h6 class="talk-title">
-              {{ talk.title }}
-            </h6>
-
-            <!-- Venue and Date Inline -->
+            <h6 class="talk-title">{{ talk.title }}</h6>
             {% if talk.venue %}
               <h6 style="font-size:0.95rem; margin:0.25rem 0;">
                 {{ talk.venue }}
@@ -60,21 +87,15 @@
                 </span>
               </h6>
             {% endif %}
-
-            <!-- Abstract -->
             {% if talk.abstract %}
-              <p style="font-size:0.95rem; font-style:italic; margin-bottom:0.5rem;">
-                {{ talk.abstract }}
-              </p>
+              <div class="abstract-text">{{ talk.abstract }}</div>
+              <button class="read-more">Read More</button>
             {% endif %}
-
-            <!-- Resource Button -->
             {% if talk.file %}
               <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF">
                 <i class="ti ti-file-text"></i> Resource
               </a>
             {% endif %}
-
           </div>
         </div>
       </li>
