@@ -1,45 +1,49 @@
-<ul class="card-text font-weight-light list-group list-group-flush">
-  {% assign talks = site.data.talks | sort: 'releaseDate' | reverse %}
-  {% for talk in talks %}
-    {% comment %} Format date as DD.Month.YYYY {% endcomment %}
-    {% assign formatted_date = talk.releaseDate | date: "%d.%B.%Y" %}
-    <li class="list-group-item" style="background: transparent!important; border: none!important; border-bottom: 1px solid rgba(0,0,0,0.1)!important;">
-      <div class="row">
-        <div class="col-xs-10 col-sm-10 col-md-10 mt-2 mt-md-0">
-          <!-- title -->
-          <h6 class="title font-weight-bold ml-1 ml-md-4">
-            {% if talk.file %}
-              <a href="{{ talk.file | relative_url }}">{{ talk.title }}</a>
-            {% else %}
-              {{ talk.title }}
+{% assign talks_by_year = site.data.talks | group_by: "year" %}
+
+{% for group in talks_by_year reversed %}
+  <div class="publications-year">{{ group.name }}</div>
+  <ul class="card-text font-weight-light list-group list-group-flush">
+    {% for talk in group.items %}
+      {% comment %} Format date as DD.Month.YYYY {% endcomment %}
+      {% assign formatted_date = talk.releaseDate | date: "%d.%B.%Y" %}
+      <li class="list-group-item" style="background: transparent!important; border: none!important; border-bottom: 1px solid rgba(0,0,0,0.1)!important;">
+        <div class="row">
+          <div class="col-xs-10 col-sm-10 col-md-10 mt-2 mt-md-0">
+            <!-- title -->
+            <h6 class="title font-weight-bold ml-1 ml-md-4">
+              {% if talk.file %}
+                <a href="{{ talk.file | relative_url }}">{{ talk.title }}</a>
+              {% else %}
+                {{ talk.title }}
+              {% endif %}
+            </h6>
+
+            <!-- location and inline date -->
+            {% if talk.venue %}
+              <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem;">
+                {{ talk.venue }}
+                <span class="text-muted" style="margin-left: 0.5rem; font-size: 0.85rem;">
+                  {{ formatted_date }}
+                </span>
+              </h6>
             {% endif %}
-          </h6>
 
-          <!-- location and inline date -->
-          {% if talk.venue %}
-            <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem;">
-              {{ talk.venue }}
-              <span class="text-muted" style="margin-left: 0.5rem; font-size: 0.85rem;">
-                {{ formatted_date }}
-              </span>
-            </h6>
-          {% endif %}
+            <!-- abstract -->
+            {% if talk.abstract %}
+              <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem; font-style: italic;">
+                {{ talk.abstract }}
+              </h6>
+            {% endif %}
 
-          <!-- abstract -->
-          {% if talk.abstract %}
-            <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem; font-style: italic;">
-              {{ talk.abstract }}
-            </h6>
-          {% endif %}
-
-          <!-- PDF icon -->
-          {% if talk.file %}
-            <a href="{{ talk.file | relative_url }}" class="bib-button ml-1 ml-md-4" title="Download PDF">
-              <i class="ti ti-file-text"></i>
-            </a>
-          {% endif %}
+            <!-- PDF icon -->
+            {% if talk.file %}
+              <a href="{{ talk.file | relative_url }}" class="bib-button ml-1 ml-md-4" title="Download PDF">
+                <i class="ti ti-file-text"></i>
+              </a>
+            {% endif %}
+          </div>
         </div>
-      </div>
-    </li>
-  {% endfor %}
-</ul>
+      </li>
+    {% endfor %}
+  </ul>
+{% endfor %}
