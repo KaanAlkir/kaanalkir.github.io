@@ -15,13 +15,13 @@
 /* Title styling: bold and customizable color */
 .talk-title {
   font-weight: bold;
-  color: var(--global-text-color); /* override --talk-title-color in your CSS */
+  color: var(--global-theme-color); /* override --talk-title-color in your CSS */
   margin-bottom: 0.5rem;
 }
   .publications-year {
     font-size: 2.5rem;
     font-weight: 700;
-    color: $link-color;
+    color: var(--global-text-color);
     margin-top: 2.5rem;
     margin-bottom: 0.45rem;
   }
@@ -31,7 +31,7 @@
 
 {% for group in talks_by_year | sort: "name" | reverse %}
   <div class="publications-year">{{ group.name }}</div>
-  <hr style="border:none;border-bottom:1px solid $link-color;margin:0.5rem 0;">
+  <hr style="border:none;border-bottom:1px solid var(--global-text-color);margin:0.5rem 0;">
   <ul class="card-text font-weight-light list-group list-group-flush talks-list">
     {% for talk in group.items %}
       {% assign formatted_date = talk.releaseDate | date: "%d %B" %}
