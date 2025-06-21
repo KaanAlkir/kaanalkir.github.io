@@ -15,9 +15,16 @@
 /* Title styling: bold and customizable color */
 .talk-title {
   font-weight: bold;
-  color: #2798ba; /* override --talk-title-color in your CSS */
+  color: #1EAEDB; /* override --talk-title-color in your CSS */
   margin-bottom: 0.5rem;
 }
+  .publications-year {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
 </style>
 
 {% assign talks_by_year = site.data.talks | group_by_exp: "talk", "talk.releaseDate | date: '%Y'" %}
@@ -64,7 +71,7 @@
             <!-- Resource Button -->
             {% if talk.file %}
               <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF">
-                <i class="ti ti-file-text"></i> Resource
+                <strong>Resource</strong> <i class="ti ti-file-text"></i>
               </a>
             {% endif %}
           </div>
