@@ -9,11 +9,21 @@
   file: "/assets/files/talks/mfg-irl-seminar.pdf"
   image: "/assets/img/1.jpg"
   
-- releaseDate: "2022-05-15"
-  title: "Kernel-Based Methods for Inverse Reinforcement Learning"
-  venue: "IEEE Conference on Decision and Control"
+- releaseDate: "2024-02-09"
+  title: "Groover's Search Algorithm"
+  venue: "Quantum Computing Class, Bilkent University"
   abstract: >
-    This talk covers the use of reproducing kernel Hilbert spaces to efficiently
-    recover reward functions in high-dimensional inverse reinforcement learning.
+     This presentation introduces Grover’s Search Algorithm, a cornerstone
+    quantum algorithm that offers a quadratic speedup over classical linear
+    search methods. We begin by formulating the unstructured search problem
+    and analyzing the inefficiencies of classical approaches. Grover’s
+    algorithm is then developed step-by-step, highlighting its initialization
+    through Hadamard gates, the iterative amplitude amplification process
+    using oracle and diffusion operators, and the final measurement phase.
+    Key concepts such as the geometric interpretation in the
+    $|\omega\rangle - |\omega^{\perp}\rangle$ plane and complexity analysis
+    are also discussed. The algorithm’s runtime of $\mathcal{O}(N)$
+    demonstrates the significant advantage of quantum computation in search
+    problems.
   file: "/assets/img/1.jpg"
   image: "/assets/img/1.jpg"
