@@ -9,7 +9,8 @@
     for mean-field games, deriving consistency conditions between expert
     occupancy measures and optimal policies.
   file: "/assets/files/talks/mfg-irl-seminar.pdf"
-
+  image: "/assets/img/1.jpg"
+  
 - releaseDate: "2022-05-15"
   title: "Kernel-Based Methods for Inverse Reinforcement Learning"
   venue: "IEEE Conference on Decision and Control"
@@ -17,3 +18,4 @@
     This talk covers the use of reproducing kernel Hilbert spaces to efficiently
     recover reward functions in high-dimensional inverse reinforcement learning.
   file: "/assets/img/1.jpg"
+  image: "/assets/img/1.jpg"
