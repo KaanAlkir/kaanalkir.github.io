@@ -9,7 +9,7 @@
   file: "/assets/files/talks/mfg-irl-seminar.pdf"
   image: "/assets/img/1.jpg"
   
-- releaseDate: "2024-02-09"
+- releaseDate: "2024-12-09"
   title: "Grover’s Search Algorithm"
   venue: "Quantum Computing Class, Bilkent University"
   abstract: >             # “>” starts a folded block
