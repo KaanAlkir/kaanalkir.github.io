@@ -48,10 +48,11 @@
   cursor: pointer;
   padding: 0;
 }
-.bib-button-wrapper {
+.talk-actions {
   display: flex;
-  justify-content: flex-end;
+  gap: 1rem;
   margin-top: 0.5rem;
+  align-items: center;
 }
 </style>
 
@@ -59,7 +60,7 @@
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.read-more').forEach(button => {
       button.addEventListener('click', () => {
-        const text = button.previousElementSibling;
+        const text = button.parentElement.previousElementSibling;
         text.classList.toggle('expanded');
         button.textContent = text.classList.contains('expanded') ? 'Read Less' : 'Read More';
       });
@@ -96,13 +97,17 @@
             {% endif %}
             {% if talk.abstract %}
               <div class="abstract-text">{{ talk.abstract }}</div>
-              <button class="read-more">Read More</button>
             {% endif %}
-            {% if talk.file %}
-              <div class="bib-button-wrapper">
-                <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF">
-                  <i class="ti ti-file-text"></i> Resource
-                </a>
+            {% if talk.abstract or talk.file %}
+              <div class="talk-actions">
+                {% if talk.abstract %}
+                  <button class="read-more">Read More</button>
+                {% endif %}
+                {% if talk.file %}
+                  <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF">
+                    <i class="ti ti-file-text"></i> Resource
+                  </a>
+                {% endif %}
               </div>
             {% endif %}
           </div>
