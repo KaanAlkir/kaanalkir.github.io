@@ -1,7 +1,14 @@
 <style>
+.talk-image-col {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  margin-right: 1rem;
+}
 .talk-thumbnail {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
   border-radius: 0.25rem;
 }
@@ -12,22 +19,21 @@
 {% for group in talks_by_year | sort: "name" | reverse %}
   <div class="publications-year">{{ group.name }}</div>
   <hr style="border:none;border-bottom:1px solid rgba(255,255,255,0.2);margin:0.5rem 0;">
-  <ul class="card-text font-weight-light list-group list-group-flush">
+  <ul class="card-text font-weight-light list-group list-group-flush talks-list">
     {% for talk in group.items %}
       {% assign formatted_date = talk.releaseDate | date: "%d.%B.%Y" %}
       <li class="list-group-item" style="background: transparent!important; border: none!important;">
-        <div class="row align-items-start">
+        <div class="d-flex align-items-start">
           <!-- Thumbnail Column -->
-          <div class="col-2">
+          <div class="talk-image-col">
             {% if talk.image %}
               <img src="{{ talk.image | relative_url }}" alt="{{ talk.title }}" class="talk-thumbnail">
             {% endif %}
           </div>
 
           <!-- Content Column -->
-          <div class="col-10">
-            <!-- Title -->
-            <h6 class="title font-weight-bold">
+          <div class="flex-fill">
+            <h6 class="title font-weight-bold mb-1">
               {% if talk.file %}
                 <a href="{{ talk.file | relative_url }}">{{ talk.title }}</a>
               {% else %}
@@ -35,24 +41,21 @@
               {% endif %}
             </h6>
 
-            <!-- Venue and Date Inline -->
             {% if talk.venue %}
               <h6 style="font-size:0.95rem; margin:0.25rem 0;">
                 {{ talk.venue }}
-                <span class="text-muted" style="margin-left:0.5rem; font-size:0.85rem;">
+                <span class="text-muted" style="margin-left:0.5rem;font-size:0.85rem;">
                   {{ formatted_date }}
                 </span>
               </h6>
             {% endif %}
 
-            <!-- Abstract -->
             {% if talk.abstract %}
               <p style="font-size:0.95rem; font-style:italic; margin-bottom:0.5rem;">
                 {{ talk.abstract }}
               </p>
             {% endif %}
 
-            <!-- PDF Icon -->
             {% if talk.file %}
               <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF">
                 <i class="ti ti-file-text"></i>
