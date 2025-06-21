@@ -11,6 +11,7 @@
   
 - releaseDate: "2024-02-09"
   title: "Grover’s Search Algorithm"
+  venue: "Quantum Computing Class, Bilkent University"
   abstract: >             # “>” starts a folded block
     This presentation introduces Grover’s Search Algorithm, a
     cornerstone quantum algorithm that offers a quadratic
@@ -28,3 +29,24 @@
     advantage of quantum computation in search problems.
   image: "/assets/img/1.jpg"
   file: "/assets/pdf/Grover Search Presentation.pdf"
+
+- releaseDate: "2025-06-24"
+  title: "Average-Cost Mean-Field Games: Forward and Inverse Perspectives"
+    venue: "Stocastic Days, Özyeğin University"
+  abstract: >             # “>” starts a folded block
+    This work investigates entropy-regularized control and inverse
+    reinforcement learning in infinite-horizon mean-field games under an
+    average-cost criterion. On the forward side, we analyze the
+    entropy-regularized Bellman equation and characterize the optimal policy
+    via a closed-form soft-max representation. Under standard regularity
+    assumptions, we establish contraction properties that guarantee
+    convergence of fixed-point iterations to a mean-field equilibrium.
+    In the inverse setting, the objective is to infer the reward function
+    from expert demonstrations that are optimal with respect to an unknown
+    cost structure. Within the same entropy-regularized framework, the
+    inverse problem is reformulated as a convex program over occupation
+    measures. We derive a dual formulation that is smooth and strongly
+    convex, and propose a first-order solution method that recovers an
+    equilibrium policy consistent with the observed data.
+  image: "/assets/img/1.jpg"
+  file: "/assets/pdf/Stochastic Days 2025.pdf"
