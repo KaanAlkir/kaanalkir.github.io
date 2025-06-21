@@ -12,96 +12,46 @@
   object-fit: cover;
   border-radius: 0.25rem;
 }
+/* Title styling: bold and customizable color */
 .talk-title {
   font-weight: bold;
-  color: var(--global-theme-color);
+  color: var(--global-theme-color); /* override --talk-title-color in your CSS */
   margin-bottom: 0.5rem;
 }
-.publications-year {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--global-text-color);
-  margin-top: 2.5rem;
-  margin-bottom: 0.45rem;
-}
-.year-separator {
-  border: none;
-  border-bottom: 1px solid var(--global-text-color);
-  margin: 0.5rem 0;
-}
-.abstract-text {
-  font-size: 0.95rem;
-  font-style: italic;
-  margin-bottom: 0.5rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  position: relative;
-}
-.abstract-text::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 1.2em;
-  pointer-events: none;
-}
-@media (prefers-color-scheme: dark) {
-  .abstract-text::after {
-    background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1));
+  .publications-year {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--global-text-color);
+    margin-top: 2.5rem;
+    margin-bottom: 0.45rem;
   }
-  .read-more {
-    color: #fff;
-  }
-}
-@media (prefers-color-scheme: light) {
-  .abstract-text::after {
-    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
-  }
-  .read-more {
-    color: var(--global-theme-color);
-  }
-}
-.read-more {
-  background: none;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 0;
-}
 </style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.read-more').forEach(button => {
-      button.addEventListener('click', () => {
-        const text = button.previousElementSibling;
-        text.classList.toggle('expanded');
-        button.textContent = text.classList.contains('expanded') ? 'Read Less ←' : 'Read More →';
-      });
-    });
-  });
-</script>
 
 {% assign talks_by_year = site.data.talks | group_by_exp: "talk", "talk.releaseDate | date: '%Y'" %}
 
 {% for group in talks_by_year | sort: "name" | reverse %}
   <div class="publications-year">{{ group.name }}</div>
-  <hr class="year-separator">
+  <hr style="border:none;border-bottom:1px solid var(--global-text-color);margin:0.5rem 0;">
   <ul class="card-text font-weight-light list-group list-group-flush talks-list">
     {% for talk in group.items %}
       {% assign formatted_date = talk.releaseDate | date: "%d %B" %}
       <li class="list-group-item" style="background: transparent!important; border: none!important;">
         <div class="d-flex align-items-start">
+          <!-- Thumbnail Column -->
           <div class="talk-image-col">
             {% if talk.image %}
               <img src="{{ talk.image | relative_url }}" alt="{{ talk.title }}" class="talk-thumbnail">
             {% endif %}
           </div>
+
+          <!-- Content Column -->
           <div class="flex-fill">
-            <h6 class="talk-title">{{ talk.title }}</h6>
+            <!-- Title -->
+            <h6 class="talk-title">
+              {{ talk.title }}
+            </h6>
+
+            <!-- Venue and Date Inline -->
             {% if talk.venue %}
               <h6 style="font-size:0.95rem; margin:0.25rem 0;">
                 {{ talk.venue }}
@@ -110,15 +60,21 @@
                 </span>
               </h6>
             {% endif %}
+
+            <!-- Abstract -->
             {% if talk.abstract %}
-              <div class="abstract-text">{{ talk.abstract }}</div>
-              <button class="read-more">Read More →</button>
+              <p style="font-size:0.95rem; font-style:italic; margin-bottom:0.5rem;">
+                {{ talk.abstract }}
+              </p>
             {% endif %}
+
+            <!-- Resource Button -->
             {% if talk.file %}
               <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF">
                 <i class="ti ti-file-text"></i> Resource
               </a>
             {% endif %}
+
           </div>
         </div>
       </li>
