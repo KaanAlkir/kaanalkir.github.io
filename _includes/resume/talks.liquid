@@ -12,6 +12,12 @@
   object-fit: cover;
   border-radius: 0.25rem;
 }
+/* Title styling: bold and customizable color */
+.talk-title {
+  font-weight: bold;
+  color: var(--talk-title-color, #007acc); /* override --talk-title-color in your CSS */
+  margin-bottom: 0.5rem;
+}
 </style>
 
 {% assign talks_by_year = site.data.talks | group_by_exp: "talk", "talk.releaseDate | date: '%Y'" %}
@@ -33,14 +39,12 @@
 
           <!-- Content Column -->
           <div class="flex-fill">
-            <h6 class="title font-weight-bold mb-1">
-              {% if talk.file %}
-                <a href="{{ talk.file | relative_url }}">{{ talk.title }}</a>
-              {% else %}
-                {{ talk.title }}
-              {% endif %}
+            <!-- Title -->
+            <h6 class="talk-title">
+              {{ talk.title }}
             </h6>
 
+            <!-- Venue and Date Inline -->
             {% if talk.venue %}
               <h6 style="font-size:0.95rem; margin:0.25rem 0;">
                 {{ talk.venue }}
@@ -50,15 +54,17 @@
               </h6>
             {% endif %}
 
+            <!-- Abstract -->
             {% if talk.abstract %}
               <p style="font-size:0.95rem; font-style:italic; margin-bottom:0.5rem;">
                 {{ talk.abstract }}
               </p>
             {% endif %}
 
+            <!-- Resource Button -->
             {% if talk.file %}
               <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF">
-                Material <i class="ti ti-file-text"></i>
+                Resource <i class="ti ti-file-text"></i>
               </a>
             {% endif %}
           </div>
