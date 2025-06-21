@@ -2,38 +2,43 @@
 layout: page
 permalink: /talks/
 title: Talks
-description: talks by categories in reversed chronological order.
+description: Talks grouped by year in reversed chronological order.
 nav: true
-nav_order: 3    # adjust to position in the menu
+nav_order: 3
 ---
 
+{% assign talks_by_year = site.data.talks | group_by: "year" %}
+{% for group in talks_by_year reversed %}
+## {{ group.name }}
+
 <div class="publications">
-
-{% for talk in site.data.talks reversed %}
-  <div class="publication">
-    <h3 class="publication-title">
-      {% if talk.bib %}
-        <a href="{{ talk.bib | relative_url }}">{{ talk.title }}</a>
-      {% else %}
-        {{ talk.title }}
+  {% for talk in group.items %}
+    <div class="publication">
+      {% if talk.image %}
+        <img src="{{ talk.image | relative_url }}" alt="{{ talk.title }}" class="publication-img"/>
       {% endif %}
-    </h3>
-    <p class="publication-meta">
-      {{ talk.venue }}, {{ talk.year }}
-    </p>
-    {% if talk.authors %}
-      <p class="publication-authors">
-        {{ talk.authors | join: ", " }}
+      
+      <h3 class="publication-title">{{ talk.title }}</h3>
+      <p class="publication-meta">
+        {{ talk.date }} — {{ talk.location }}
       </p>
-    {% endif %}
-    {% if talk.categories %}
-      <p class="publication-tags">
-        {% for c in talk.categories %}
-          <span class="tag">{{ c }}</span>
-        {% endfor %}
-      </p>
-    {% endif %}
-  </div>
-{% endfor %}
 
+      {% if talk.authors %}
+        <p class="publication-authors">
+          {{ talk.authors | join: ", " }}
+        </p>
+      {% endif %}
+
+      {% if talk.abstract %}
+        <p class="publication-abstract">
+          {{ talk.abstract }}
+        </p>
+      {% endif %}
+
+      {% if talk.file %}
+        <a href="{{ talk.file | relative_url }}" class="bib-button">PDF</a>
+      {% endif %}
+    </div>
+  {% endfor %}
 </div>
+{% endfor %}
