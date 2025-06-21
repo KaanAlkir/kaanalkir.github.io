@@ -11,7 +11,7 @@
   
 - releaseDate: "2024-02-09"
   title: "Grover’s Search Algorithm"
-  introduction: >             # “>” starts a folded block
+  abstract: >             # “>” starts a folded block
     This presentation introduces Grover’s Search Algorithm, a
     cornerstone quantum algorithm that offers a quadratic
     speedup over classical linear search methods. We begin by
