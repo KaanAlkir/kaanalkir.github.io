@@ -5,7 +5,7 @@
   <ul class="card-text font-weight-light list-group list-group-flush">
     {% for talk in group.items %}
       {% comment %} Format date as DD.Month.YYYY {% endcomment %}
-      {% assign formatted_date = talk.releaseDate | date: "%d.%B.%Y" %}
+      {% assign formatted_date = talk.releaseDate | date: "%d %B %Y" %}
       <li class="list-group-item" style="background: transparent!important; border: none!important; border-bottom: 1px solid rgba(0,0,0,0.1)!important;">
         <div class="row">
           <div class="col-xs-10 col-sm-10 col-md-10 mt-2 mt-md-0">
