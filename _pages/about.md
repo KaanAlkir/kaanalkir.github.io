@@ -6,7 +6,7 @@ subtitle: Bilkent University - Department of Mathematics.
 
 profile:
   align: right
-  image: my_pic.jpeg
+  image: my_pic.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
 
