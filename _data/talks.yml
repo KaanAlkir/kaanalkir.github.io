@@ -32,7 +32,7 @@
 
 - releaseDate: "2025-06-24"
   title: "Average-Cost Mean-Field Games: Forward and Inverse Perspectives"
-    venue: "Stocastic Days, Özyeğin University"
+  venue: "Stocastic Days, Özyeğin University"
   abstract: >             # “>” starts a folded block
     This work investigates entropy-regularized control and inverse
     reinforcement learning in infinite-horizon mean-field games under an
