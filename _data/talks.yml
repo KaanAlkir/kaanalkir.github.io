@@ -1,20 +1,30 @@
-# List your talks here. Fields: title, authors (list), venue, year, categories (list), image (path), bib (optional)
+# List your talks here. Fields: title, authors (list), venue, year, date, location,
+# abstract, image (path), file (optional .pdf)
+
 - title: "On Average-Cost Inverse Reinforcement Learning in Mean-Field Games"
   authors:
     - "Kaan Alkır"
-  venue: "Reinforcement Learning Seminar, Bilkent University"
+  date: "June 10, 2025"
+  location: "Bilkent University, Ankara"
   year: 2025
-  categories:
-    - "Invited"
+  abstract: >
+    We present a novel average-cost inverse reinforcement learning
+    framework for mean-field games, deriving consistency conditions
+    between expert occupancy measures and optimal policies.
   image: "/assets/images/talks/mfg-irl-seminar.jpg"
-  bib: "/talks/mfg-irl-seminar.bib"
+  file: "/assets/files/talks/mfg-irl-seminar.pdf"
 
 - title: "Kernel-Based Methods for Inverse Reinforcement Learning"
   authors:
     - "Kaan Alkır"
-  venue: "IEEE Conference on Decision and Control"
+  date: "May 15, 2025"
+  location: "IEEE CDC, Singapore"
   year: 2025
-  categories:
-    - "Conference"
+  abstract: >
+    This talk covers the use of reproducing kernel Hilbert spaces
+    to efficiently recover reward functions in high-dimensional
+    inverse reinforcement learning problems.
   image: "/assets/images/talks/birl-kernel-cdc.jpg"
-  bib: "/talks/birl-kernel-cdc.bib"
+  file: "/assets/files/talks/birl-kernel-cdc.pdf"
+
+# Add more entries below following the same format...
