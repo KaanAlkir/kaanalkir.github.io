@@ -1,12 +1,19 @@
-{% assign talks_by_year = site.data.talks | group_by: "year" %}
+{%- comment -%}
+  Group all talks by the year of releaseDate
+{%- endcomment -%}
+{% assign talks_by_year = site.data.talks 
+     | group_by_exp: "talk", "talk.releaseDate | date: '%Y'" 
+%}
 
-{% for group in talks_by_year reversed %}
+{%- comment -%}
+  Sort the year‐groups descending, then render each year header + its talks
+{%- endcomment -%}
+{% for group in talks_by_year | sort: "name" | reverse %}
   <div class="publications-year">{{ group.name }}</div>
   <ul class="card-text font-weight-light list-group list-group-flush">
     {% for talk in group.items %}
-      {% comment %} Format date as DD.Month.YYYY {% endcomment %}
-      {% assign formatted_date = talk.releaseDate | date: "%d %B %Y" %}
-      <li class="list-group-item" style="background: transparent!important; border: none!important; border-bottom: 1px solid rgba(0,0,0,0.1)!important;">
+      {%- comment -%} your existing rendering of a single talk goes here {%- endcomment -%}
+      <li class="list-group-item" style="background:transparent;border:none;border-bottom:1px solid rgba(0,0,0,0.1)!important;">
         <div class="row">
           <div class="col-xs-10 col-sm-10 col-md-10 mt-2 mt-md-0">
             <!-- title -->
@@ -17,24 +24,22 @@
                 {{ talk.title }}
               {% endif %}
             </h6>
-
-            <!-- location and inline date -->
+            <!-- venue + date -->
+            {% assign formatted_date = talk.releaseDate | date: "%d.%B.%Y" %}
             {% if talk.venue %}
-              <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem;">
+              <h6 class="ml-1 ml-md-4" style="font-size:0.95rem;">
                 {{ talk.venue }}
-                <span class="text-muted" style="margin-left: 0.5rem; font-size: 0.85rem;">
+                <span class="text-muted" style="margin-left:0.5rem;font-size:0.85rem;">
                   {{ formatted_date }}
                 </span>
               </h6>
             {% endif %}
-
             <!-- abstract -->
             {% if talk.abstract %}
-              <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem; font-style: italic;">
+              <h6 class="ml-1 ml-md-4" style="font-size:0.95rem;font-style:italic;">
                 {{ talk.abstract }}
               </h6>
             {% endif %}
-
             <!-- PDF icon -->
             {% if talk.file %}
               <a href="{{ talk.file | relative_url }}" class="bib-button ml-1 ml-md-4" title="Download PDF">
