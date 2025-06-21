@@ -1,5 +1,4 @@
 ---
----
 layout: publications
 title: Talks
 permalink: /talks/
