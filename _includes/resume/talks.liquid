@@ -48,6 +48,14 @@
   cursor: pointer;
   padding: 0;
 }
+.bib-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+.bib-button {
+  /* existing styles */
+}
 </style>
 
 <script>
@@ -92,9 +100,11 @@
               <button class="read-more">Read More</button>
             {% endif %}
             {% if talk.file %}
-              <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF">
-                <i class="ti ti-file-text"></i> Resource
-              </a>
+              <div class="bib-button-wrapper">
+                <a href="{{ talk.file | relative_url }}" class="bib-button" title="Download PDF">
+                  <i class="ti ti-file-text"></i> Resource
+                </a>
+              </div>
             {% endif %}
           </div>
         </div>
