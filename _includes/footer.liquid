@@ -1,8 +1,13 @@
+{% comment %}
+Customized footer: removed footer_text to disable theme credit banner
+{% endcomment %}
+
 {% capture footer_contents %}
   &copy; Copyright {{ site.time | date: '%Y' }}
   {{ site.first_name }}
   {{ site.middle_name }}
-  {{ site.last_name }}. {{ site.footer_text }}
+  {{ site.last_name }}.
+  {%- comment -%} {{ site.footer_text }} {% endcomment %}
   {% if site.impressum_path %}
     <a href="{{ site.url }}{{ site.baseurl }}{{ site.impressum_path }}">Impressum</a>.
   {% endif %}
