@@ -64,18 +64,18 @@
   image: "/assets/img/talks_stocastic_days.JPG"
   file: "/assets/pdf/Stochastic Days 2025.pdf"
   
-  - releaseDate: "2023-12-21"
-    title: "Frobenius algebras"
-    venue: "Representation Theory Class, Bilkent University"
-    abstract: >             # “>” starts a folded block
-      This talk provides an introduction to Frobenius algebras—finite-dimensional 
-      algebras over a field K whose left and right regular representations are equivalent. 
-      We begin by revisiting Frobenius's original characterization via parastrophic 
-      matrices and then present modern, basis-independent criteria due to Brauer, Nesbitt, 
-      and Nakayama, including the existence of nondegenerate associative bilinear forms. 
-      We explore the distinction between Frobenius and symmetric algebras, 
-      the role of the Nakayama automorphism, and the structural consequences such 
-      as self-injectivity. The talk emphasizes both classical motivation and categorical 
-      formulations, aiming to bridge algebraic structure with representation-theoretic insights.
-    image: "/assets/img/1.jpg"
-    file: "/assets/pdf/Frobenius_Algebras.pdf"
+- releaseDate: "2023-12-21"
+  title: "Frobenius algebras"
+  venue: "Representation Theory Class, Bilkent University"
+  abstract: >             # “>” starts a folded block
+    This talk provides an introduction to Frobenius algebras—finite-dimensional 
+    algebras over a field K whose left and right regular representations are equivalent. 
+    We begin by revisiting Frobenius's original characterization via parastrophic 
+    matrices and then present modern, basis-independent criteria due to Brauer, Nesbitt, 
+    and Nakayama, including the existence of nondegenerate associative bilinear forms. 
+    We explore the distinction between Frobenius and symmetric algebras, 
+    the role of the Nakayama automorphism, and the structural consequences such 
+    as self-injectivity. The talk emphasizes both classical motivation and categorical 
+    formulations, aiming to bridge algebraic structure with representation-theoretic insights.
+  image: "/assets/img/1.jpg"
+  file: "/assets/pdf/Frobenius_Algebras.pdf"
