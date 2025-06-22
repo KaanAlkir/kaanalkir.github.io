@@ -80,7 +80,7 @@
   image: "/assets/img/1.jpg"
   file: "/assets/pdf/Frobenius_Algebras.pdf"
   
-- releaseDate: "2023-06-15"
+- releaseDate: "2022-06-15"
   title: "Multi-Criteria Decision Making: SMART and VIKOR Methods"
   venue: "ZOOM, Ankara University"
   abstract: >             # “>” starts a folded block
