@@ -63,61 +63,19 @@
     equilibrium policy consistent with the observed data.
   image: "/assets/img/talks_stocastic_days.JPG"
   file: "/assets/pdf/Stochastic Days 2025.pdf"
-
-- releaseDate: "2025-06-24"
-  title: "Average-Cost Mean-Field Games: Forward and Inverse Perspectives"
-  venue: "Stocastic Days, Özyeğin University"
-  abstract: >             # “>” starts a folded block
-    This work investigates entropy-regularized control and inverse
-    reinforcement learning in infinite-horizon mean-field games under an
-    average-cost criterion. On the forward side, we analyze the
-    entropy-regularized Bellman equation and characterize the optimal policy
-    via a closed-form soft-max representation. Under standard regularity
-    assumptions, we establish contraction properties that guarantee
-    convergence of fixed-point iterations to a mean-field equilibrium.
-    In the inverse setting, the objective is to infer the reward function
-    from expert demonstrations that are optimal with respect to an unknown
-    cost structure. Within the same entropy-regularized framework, the
-    inverse problem is reformulated as a convex program over occupation
-    measures. We derive a dual formulation that is smooth and strongly
-    convex, and propose a first-order solution method that recovers an
-    equilibrium policy consistent with the observed data.
-  image: "/assets/img/talks_stocastic_days.JPG"
-  file: "/assets/pdf/Stochastic Days 2025.pdf"
-
-  - releaseDate: "2025-06-24"
-  title: "Average-Cost Mean-Field Games: Forward and Inverse Perspectives"
-  venue: "Stocastic Days, Özyeğin University"
-  abstract: >             # “>” starts a folded block
-    This work investigates entropy-regularized control and inverse
-    reinforcement learning in infinite-horizon mean-field games under an
-    average-cost criterion. On the forward side, we analyze the
-    entropy-regularized Bellman equation and characterize the optimal policy
-    via a closed-form soft-max representation. Under standard regularity
-    assumptions, we establish contraction properties that guarantee
-    convergence of fixed-point iterations to a mean-field equilibrium.
-    In the inverse setting, the objective is to infer the reward function
-    from expert demonstrations that are optimal with respect to an unknown
-    cost structure. Within the same entropy-regularized framework, the
-    inverse problem is reformulated as a convex program over occupation
-    measures. We derive a dual formulation that is smooth and strongly
-    convex, and propose a first-order solution method that recovers an
-    equilibrium policy consistent with the observed data.
-  image: "/assets/img/talks_stocastic_days.JPG"
-  file: "/assets/pdf/Stochastic Days 2025.pdf"
-
+  
   - releaseDate: "2023-12-21"
-  title: "Frobenius algebras"
-  venue: "Representation Theory Class, Bilkent University"
-  abstract: >             # “>” starts a folded block
-    This talk provides an introduction to Frobenius algebras—finite-dimensional 
-    algebras over a field K whose left and right regular representations are equivalent. 
-    We begin by revisiting Frobenius's original characterization via parastrophic 
-    matrices and then present modern, basis-independent criteria due to Brauer, Nesbitt, 
-    and Nakayama, including the existence of nondegenerate associative bilinear forms. 
-    We explore the distinction between Frobenius and symmetric algebras, 
-    the role of the Nakayama automorphism, and the structural consequences such 
-    as self-injectivity. The talk emphasizes both classical motivation and categorical 
-    formulations, aiming to bridge algebraic structure with representation-theoretic insights.
-  image: "/assets/img/1.jpg"
-  file: "/assets/pdf/Frobenius_Algebras.pdf"
+    title: "Frobenius algebras"
+    venue: "Representation Theory Class, Bilkent University"
+    abstract: >             # “>” starts a folded block
+      This talk provides an introduction to Frobenius algebras—finite-dimensional 
+      algebras over a field K whose left and right regular representations are equivalent. 
+      We begin by revisiting Frobenius's original characterization via parastrophic 
+      matrices and then present modern, basis-independent criteria due to Brauer, Nesbitt, 
+      and Nakayama, including the existence of nondegenerate associative bilinear forms. 
+      We explore the distinction between Frobenius and symmetric algebras, 
+      the role of the Nakayama automorphism, and the structural consequences such 
+      as self-injectivity. The talk emphasizes both classical motivation and categorical 
+      formulations, aiming to bridge algebraic structure with representation-theoretic insights.
+    image: "/assets/img/1.jpg"
+    file: "/assets/pdf/Frobenius_Algebras.pdf"
