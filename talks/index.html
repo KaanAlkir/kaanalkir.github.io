@@ -4,7 +4,10 @@
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.read-more').forEach(button => {
       button.addEventListener('click', () => {
-        const text = button.previousElementSibling;
+        // find the corresponding abstract-text within the same list item
+        const listItem = button.closest('li');
+        const text = listItem.querySelector('.abstract-text');
+        if (!text) return;
         text.classList.toggle('expanded');
         button.textContent = text.classList.contains('expanded') ? 'Read Less' : 'Read More';
       });
