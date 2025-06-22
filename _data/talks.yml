@@ -79,3 +79,17 @@
     formulations, aiming to bridge algebraic structure with representation-theoretic insights.
   image: "/assets/img/1.jpg"
   file: "/assets/pdf/Frobenius_Algebras.pdf"
+  
+- releaseDate: "2023-06-15"
+  title: "Multi-Criteria Decision Making: SMART and VIKOR Methods"
+  venue: "ZOOM, Ankara University"
+  abstract: >             # “>” starts a folded block
+    Many scientific techniques are used for decision making. 
+    While there are many informal and non-empirical methods 
+    applicable in specific areas, these do not generalize well to a 
+    broader context. However, using mathematical methods offers a 
+    universal approach for selecting the best alternative in any domain. 
+    This project introduces two frequently used Multi-Criteria Decision 
+    Making (MCDM) methods—SMART and VIKOR—and presents illustrative case studies.
+  image: "/assets/img/1.jpg"
+  file: "/assets/pdf/MCDM_report.pdf"
