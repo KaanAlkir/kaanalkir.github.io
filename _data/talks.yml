@@ -65,7 +65,7 @@
   file: "/assets/pdf/Stochastic Days 2025.pdf"
   
 - releaseDate: "2023-12-21"
-  title: "Frobenius algebras"
+  title: "Frobenius Algebras"
   venue: "Representation Theory Class, Bilkent University"
   abstract: >             # “>” starts a folded block
     This talk provides an introduction to Frobenius algebras—finite-dimensional 
