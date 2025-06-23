@@ -60,6 +60,22 @@ You describe how you toiled, sweated, _bled_ for your project, and then... you r
     You can also have artistically styled 2/3 + 1/3 images, like these.
 </div>
 
+<div class="row justify-content-sm-center">
+  <div class="col-sm-12 mt-4">
+    <div class="embed-responsive embed-responsive-16by9" style="border: 1px solid #ccc;">
+      <iframe class="embed-responsive-item"
+              src="{{ site.baseurl }}/assets/simulations/gas/index.html"
+              width="100%"
+              height="600"
+              allowfullscreen
+              style="border: none;">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+
+
 The code is simple.
 Just wrap your images with `<div class="col-sm">` and place them inside `<div class="row">` (read more about the <a href="https://getbootstrap.com/docs/4.4/layout/grid/">Bootstrap Grid</a> system).
 To make images responsive, add `img-fluid` class to each; for rounded corners and shadows use `rounded` and `z-depth-1` classes.
