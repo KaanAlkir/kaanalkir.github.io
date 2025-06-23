@@ -64,7 +64,7 @@ You describe how you toiled, sweated, _bled_ for your project, and then... you r
   <div class="col-sm-12 mt-4">
     <div class="embed-responsive embed-responsive-16by9" style="border: 1px solid #ccc;">
       <iframe class="embed-responsive-item"
-              src="{{ site.baseurl }}/assets/simulations/gas/index.html"
+              src="{{ site.baseurl }}/assets/simulations/gas/gas_index.html"
               width="100%"
               height="600"
               allowfullscreen
