@@ -3,7 +3,7 @@
 
 - releaseDate: "2025-04-22"
   title: "Reinforcement Learning for Mean-field Games with Average Reward Criterion"
-  venue: "Analysis Seminar, Bilkent University"
+  venue: "Analysis Seminars, Bilkent University"
   abstract: >
     We study the inverse reinforcement learning (IRL) problem 
     for discrete-time, infinite-horizon mean-field games (MFG) with 
