@@ -1,6 +1,6 @@
 ---
 layout: page
-title: project 1
+title: Interactive Gas Simulation of Navier–Stokes-Driven Dynamical Systems in 2-D 
 description: with background image
 img: assets/img/12.jpg
 importance: 1
