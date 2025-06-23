@@ -20,7 +20,7 @@
     we propose a first-order algorithm for solving the dual problem and recovering
     an entropy-maximizing equilibrium policy.
   file: "/assets/pdf/IRL_Presentation.pdf"
-  image: "/assets/img/1.jpg"
+  image: "/assets/img/IRL_analysis_talk.png"
   
 - releaseDate: "2024-12-09"
   title: "Grover’s Search Algorithm"
