@@ -1,5 +1,3 @@
-// script.js
-
 // ——— Parameters & State ———
 const N    = 200;
 const size = (N + 2) * (N + 2);
@@ -265,23 +263,37 @@ const debUpdate = debounce(updateWindField, 50);
 
 // create a collapsible folder for wind settings, open by default
 const windFolder = gui.addFolder('Wind Options');
-windFolder.add(simParams, 'windType', ['Uniform', 'Vortex', 'Sinusoidal', 'Custom'])
-          .name('Wind Type')
-          .onChange(debUpdate);
-windFolder.add(simParams, 'dynF')
-          .name('dx/dt = f(x,y)')
-          .onFinishChange(debUpdate);
-windFolder.add(simParams, 'dynG')
-          .name('dy/dt = g(x,y)')
-          .onFinishChange(debUpdate);
+const windTypeCtrl = windFolder.add(simParams, 'windType', ['Uniform', 'Vortex', 'Sinusoidal', 'Custom'])
+  .name('Wind Type')
+  .onChange(val => {
+    debUpdate();
+    updateDynControllers(val);
+  });
+const dynFCtrl = windFolder.add(simParams, 'dynF')
+  .name('dx/dt = f(x,y)')
+  .onFinishChange(debUpdate);
+const dynGCtrl = windFolder.add(simParams, 'dynG')
+  .name('dy/dt = g(x,y)')
+  .onFinishChange(debUpdate);
 windFolder.add(simParams, 'windForce', 0, 20).step(0.1)
-          .name('Wind Force')
-          .onChange(debUpdate);
+  .name('Wind Force')
+  .onChange(debUpdate);
 windFolder.open();
 
+// disable/enable the dynF and dynG controllers based on windType
+function updateDynControllers(val) {
+  const isCustom = (val === undefined ? simParams.windType : val) === 'Custom';
+  [dynFCtrl, dynGCtrl].forEach(ctrl => {
+    ctrl.__li.style.opacity = isCustom ? '1' : '0.5';
+    ctrl.__li.style.pointerEvents = isCustom ? 'auto' : 'none';
+  });
+}
+// initialize their state
+updateDynControllers();
+
+// advanced options folder
 gui.add(simParams, 'showField').name('Show Field & Axes');
 gui.add(simParams, 'reset').name('Reset');
-
 const adv = gui.addFolder('Advanced Simulation Options');
 adv.add(simParams, 'injectionDensity', 0, 2000).step(1).name('Injection Density');
 adv.add(simParams, 'injectionRadius',  0,   10).step(1).name('Injection Radius');
