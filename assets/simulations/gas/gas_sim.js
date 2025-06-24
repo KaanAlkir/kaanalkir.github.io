@@ -29,8 +29,9 @@ const simParams = {
   arrowLineWidth: 1.5,
   arrowHueMax:    240,
 
-  // display
+  // display toggles
   showField:     true,
+  clearEquilibria: true,   // NEW: toggle for clearing equilibria
 
   // reset callback
   reset: () => {
@@ -171,9 +172,8 @@ function project(uArr, vArr, pArr, divArr) {
 // ——— Build Wind Field ———
 function updateWindField() {
   const wf = Math.min(Math.max(simParams.windForce, 0), 20);
-  const rad  = simParams.windAngle * Math.PI / 180;
-  const cosA = Math.cos(rad),
-        sinA = Math.sin(rad);
+  const rad  = simParams.windAngle * Math.PI/180,
+        cosA = Math.cos(rad), sinA = Math.sin(rad);
 
   if (simParams.windType === 'Custom') {
     try {
@@ -187,122 +187,82 @@ function updateWindField() {
 
   for (let j = 1; j <= N; j++) {
     for (let i = 1; i <= N; i++) {
-      const k = IX(i,j);
-      const x = ((i - 1) / (N - 1)) * 2 - 1;
-      const y = ((j - 1) / (N - 1)) * 2 - 1;
-
+      const k = IX(i,j),
+            x = ((i-1)/(N-1))*2 - 1,
+            y = ((j-1)/(N-1))*2 - 1;
       switch (simParams.windType) {
         case 'Uniform':
           windU[k] = cosA * wf;
-          windV[k] = sinA * wf;
-          break;
+          windV[k] = sinA * wf; break;
         case 'Vortex': {
-          const cx = (N + 1) / 2,
-                cy = cx;
-          const dx = i - cx,
-                dy = j - cy;
-          const len = Math.hypot(dx, dy) || 1;
-          windU[k] = -dy / len * wf;
-          windV[k] =  dx / len * wf;
-          break;
+          const cx=(N+1)/2, cy=cx,
+                dx=i-cx, dy=j-cy,
+                len=Math.hypot(dx,dy)||1;
+          windU[k] = -dy/len * wf;
+          windV[k] =  dx/len * wf; break;
         }
         case 'Sinusoidal':
-          windU[k] = Math.sin(Math.PI * x) * wf;
-          windV[k] = Math.cos(Math.PI * y) * wf;
-          break;
+          windU[k] = Math.sin(Math.PI*x) * wf;
+          windV[k] = Math.cos(Math.PI*y) * wf; break;
         case 'Custom':
-          windU[k] = fNode.evaluate({ x, y }) * wf;
-          windV[k] = gNode.evaluate({ x, y }) * wf;
-          break;
+          windU[k] = fNode.evaluate({x,y}) * wf;
+          windV[k] = gNode.evaluate({x,y}) * wf; break;
       }
     }
   }
 }
 
 // ——— Mouse Injection ———
-let isMouseDown = false,
-    lastFx = 0,
-    lastFy = 0;
-
+let isMouseDown=false, lastFx=0, lastFy=0;
 canvas.addEventListener('mousedown', e => {
   isMouseDown = true;
   const r = canvas.getBoundingClientRect();
   lastFx = (e.clientX - r.left) * (N / r.width);
   lastFy = (e.clientY - r.top)  * (N / r.height);
 });
-canvas.addEventListener('mouseup', () => {
-  isMouseDown = false;
-});
+canvas.addEventListener('mouseup',   () => isMouseDown=false);
 canvas.addEventListener('mousemove', e => {
   if (!isMouseDown) return;
   const r  = canvas.getBoundingClientRect();
   const fx = (e.clientX - r.left) * (N / r.width);
   const fy = (e.clientY - r.top)  * (N / r.height);
-  const i  = Math.max(0, Math.min(N - 1, Math.floor(fx)));
-  const j  = Math.max(0, Math.min(N - 1, Math.floor(fy)));
-
-  for (let dj = -simParams.injectionRadius; dj <= simParams.injectionRadius; dj++) {
-    for (let di = -simParams.injectionRadius; di <= simParams.injectionRadius; di++) {
-      const ii = i + di,
-            jj = j + dj;
-      if (ii < 0 || ii >= N || jj < 0 || jj >= N) continue;
-      const idx = IX(ii + 1, jj + 1);
-      dens[idx] += simParams.injectionDensity;
-      u[idx]    += (fx - lastFx) * 0.5;
-      v[idx]    += (fy - lastFy) * 0.5;
+  const i  = Math.max(0, Math.min(N-1, Math.floor(fx)));
+  const j  = Math.max(0, Math.min(N-1, Math.floor(fy)));
+  for (let dj=-simParams.injectionRadius; dj<=simParams.injectionRadius; dj++){
+    for (let di=-simParams.injectionRadius; di<=simParams.injectionRadius; di++){
+      const ii=i+di, jj=j+dj;
+      if (ii<0||ii>=N||jj<0||jj>=N) continue;
+      const idx=IX(ii+1,jj+1);
+      dens[idx]+=simParams.injectionDensity;
+      u[idx]+=(fx-lastFx)*0.5;
+      v[idx]+=(fy-lastFy)*0.5;
     }
   }
-
-  lastFx = fx;
-  lastFy = fy;
+  lastFx=fx; lastFy=fy;
 });
 
 // ——— GUI Controls ———
 const gui = new dat.GUI();
 const debUpdate = debounce(updateWindField, 50);
 
-// create a collapsible folder for wind settings, open by default
-const windFolder = gui.addFolder('Wind Options');
-const windTypeCtrl = windFolder.add(simParams, 'windType', ['Uniform', 'Vortex', 'Sinusoidal', 'Custom'])
-  .name('Wind Type')
-  .onChange(val => {
-    debUpdate();
-    updateDynControllers(val);
-  });
-const dynFCtrl = windFolder.add(simParams, 'dynF')
-  .name('dx/dt = f(x,y)')
-  .onFinishChange(debUpdate);
-const dynGCtrl = windFolder.add(simParams, 'dynG')
-  .name('dy/dt = g(x,y)')
-  .onFinishChange(debUpdate);
-windFolder.add(simParams, 'windForce', 0, 20).step(0.1)
-  .name('Wind Force')
-  .onChange(debUpdate);
-windFolder.open();
-
-// disable/enable the dynF and dynG controllers based on windType
-function updateDynControllers(val) {
-  const isCustom = (val === undefined ? simParams.windType : val) === 'Custom';
-  [dynFCtrl, dynGCtrl].forEach(ctrl => {
-    ctrl.__li.style.opacity = isCustom ? '1' : '0.5';
-    ctrl.__li.style.pointerEvents = isCustom ? 'auto' : 'none';
-  });
-}
-// initialize their state
-updateDynControllers();
-
-// advanced options folder
+gui.add(simParams, 'windType', ['Uniform','Vortex','Sinusoidal','Custom'])
+   .name('Wind Type')
+   .onChange(debUpdate);
+gui.add(simParams, 'dynF').name('dx/dt = f(x,y)').onFinishChange(debUpdate);
+gui.add(simParams, 'dynG').name('dy/dt = g(x,y)').onFinishChange(debUpdate);
+gui.add(simParams, 'windForce', 0,20).step(0.1).name('Wind Force').onChange(debUpdate);
 gui.add(simParams, 'showField').name('Show Field & Axes');
+gui.add(simParams, 'clearEquilibria').name('Clear Equilibria');  // NEW button
 gui.add(simParams, 'reset').name('Reset');
+
 const adv = gui.addFolder('Advanced Simulation Options');
-adv.add(simParams, 'injectionDensity', 0, 2000).step(1).name('Injection Density');
-adv.add(simParams, 'injectionRadius',  0,   10).step(1).name('Injection Radius');
+adv.add(simParams, 'injectionDensity', 0,2000).step(1).name('Injection Density');
+adv.add(simParams, 'injectionRadius',  0,  10).step(1).name('Injection Radius');
 adv.add(simParams, 'velDamping',    0.90,1.00).step(0.001).name('Vel. Damping');
 adv.add(simParams, 'densDamping',   0.90,1.00).step(0.001).name('Dens. Damping');
 adv.add(simParams, 'diff',           0.0,0.02).step(0.0001).name('Diffusion');
 adv.add(simParams, 'visc',           0.0,0.001).step(0.0001).name('Viscosity');
 
-// initial build
 updateWindField();
 
 // ——— Rendering & Loop ———
@@ -311,9 +271,9 @@ function renderDensity() {
   let off = 0;
   for (let j = 0; j < N; j++) {
     for (let i = 0; i < N; i++, off += 4) {
-      const c = Math.min(255, dens[IX(i + 1, j + 1)]);
-      data[off] = data[off + 1] = data[off + 2] = c;
-      data[off + 3] = 255;
+      const c = Math.min(255, dens[IX(i+1,j+1)]);
+      data[off] = data[off+1] = data[off+2] = c;
+      data[off+3] = 255;
     }
   }
   offCtx.putImageData(densityImage, 0, 0);
@@ -322,85 +282,56 @@ function renderDensity() {
 }
 
 function drawField() {
-  const cw = canvas.width,
-        ch = canvas.height;
-  const step  = simParams.arrowSpacing;
-  const len   = step * simParams.arrowScale;
+  const cw = canvas.width, ch = canvas.height;
+  const step = simParams.arrowSpacing;
+  const len  = step * simParams.arrowScale;
   const hueMax = simParams.arrowHueMax;
   ctx.lineWidth = simParams.arrowLineWidth;
-
-  for (let j = step / 2; j < N; j += step) {
-    for (let i = step / 2; i < N; i += step) {
-      const k   = IX(i + 1, j + 1);
-      const ux  = windU[k],
-            vy  = windV[k];
+  for (let j = step/2; j < N; j += step) {
+    for (let i = step/2; i < N; i += step) {
+      const k  = IX(i+1,j+1);
+      const ux = windU[k], vy = windV[k];
       const mag = Math.hypot(ux, vy);
       if (mag < 0.005) continue;
-      const x0 = (i / N) * cw,
-            y0 = (j / N) * ch;
-      const dx = ux / mag,
-            dy = vy / mag;
-      const x1 = x0 + dx * len,
-            y1 = y0 + dy * len;
+      const x0 = (i/N)*cw, y0 = (j/N)*ch;
+      const dx = ux/mag, dy = vy/mag;
+      const x1 = x0 + dx*len, y1 = y0 + dy*len;
       const hue = Math.floor(hueMax * (mag / simParams.windForce));
-
       ctx.strokeStyle = `hsl(${hue},100%,50%)`;
       ctx.fillStyle   = `hsl(${hue},100%,50%)`;
-
+      ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(x0, y0);
-      ctx.lineTo(x1, y1);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x1 - dx * 5 - dy * 3, y1 - dy * 5 + dx * 3);
-      ctx.lineTo(x1 - dx * 5 + dy * 3, y1 - dy * 5 - dx * 3);
-      ctx.closePath();
-      ctx.fill();
+      ctx.moveTo(x1,y1);
+      ctx.lineTo(x1 - dx*5 - dy*3, y1 - dy*5 + dx*3);
+      ctx.lineTo(x1 - dx*5 + dy*3, y1 - dy*5 - dx*3);
+      ctx.closePath(); ctx.fill();
     }
   }
 }
 
 function drawAxes() {
-  const cw = canvas.width,
-        ch = canvas.height;
-  const cx = cw / 2,
-        cy = ch / 2;
+  const cw = canvas.width, ch = canvas.height;
+  const cx = cw/2, cy = ch/2;
   ctx.save();
-  ctx.strokeStyle = 'white';
-  ctx.lineWidth   = 1;
+  ctx.strokeStyle = 'white'; ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(0, cy);
-  ctx.lineTo(cw, cy);
-  ctx.moveTo(cx, 0);
-  ctx.lineTo(cx, ch);
+  ctx.moveTo(0, cy); ctx.lineTo(cw, cy);
+  ctx.moveTo(cx, 0); ctx.lineTo(cx, ch);
   ctx.stroke();
-  ctx.fillStyle = 'white';
-  ctx.font      = '12px sans-serif';
-
+  ctx.fillStyle = 'white'; ctx.font = '12px sans-serif';
   [-64, -32, 32, 64].forEach(t => {
-    const x_px = cx + t * (cw / N),
-          y_px = cy - t * (ch / N);
-    ctx.beginPath();
-    ctx.moveTo(x_px, cy - 5);
-    ctx.lineTo(x_px, cy + 5);
-    ctx.stroke();
-    ctx.fillText(t, x_px - 10, cy + 20);
-
-    ctx.beginPath();
-    ctx.moveTo(cx - 5, y_px);
-    ctx.lineTo(cx + 5, y_px);
-    ctx.stroke();
-    ctx.fillText(t, cx + 8, y_px + 4);
+    const x_px = cx + t*(cw/N), y_px = cy - t*(ch/N);
+    ctx.beginPath(); ctx.moveTo(x_px, cy-5); ctx.lineTo(x_px, cy+5); ctx.stroke();
+    ctx.fillText(t, x_px-10, cy+20);
+    ctx.beginPath(); ctx.moveTo(cx-5, y_px); ctx.lineTo(cx+5, y_px); ctx.stroke();
+    ctx.fillText(t, cx+8, y_px+4);
   });
-
   ctx.restore();
 }
 
 function step() {
   // solver
-  for (let k = 0; k < size; k++) {
+  for (let k = 0; k < size; k++){
     u[k] += windU[k] * dt;
     v[k] += windV[k] * dt;
   }
@@ -414,10 +345,10 @@ function step() {
   advect(0, dens, dens0, u, v);
 
   // damping
-  for (let k = 0; k < size; k++) {
-    u[k]    *= simParams.velDamping;
-    v[k]    *= simParams.velDamping;
-    dens[k] *= simParams.densDamping;
+  for (let k = 0; k < size; k++){
+    u[k]   *= simParams.velDamping;
+    v[k]   *= simParams.velDamping;
+    dens[k]*= simParams.densDamping;
   }
 
   // boundary damping
@@ -428,6 +359,29 @@ function step() {
     dens[IX(1,i)] *= edgeDamp;
     dens[IX(N,i)] *= edgeDamp;
   }
+
+
+  //clear equilibria
+if (simParams.clearEquilibria) {
+  // skip the border
+  for (let j = 2; j < N; j++) {
+    for (let i = 2; i < N; i++) {
+      // horizontal U / vertical V test
+      const U_lr = windU[IX(i-1,j)] * windU[IX(i+1,j)] <= 0;
+      const V_ud = windV[IX(i,  j-1)] * windV[IX(i,  j+1)] <= 0;
+      // vertical U / horizontal V test
+      const U_ud = windU[IX(i,  j-1)] * windU[IX(i,  j+1)] <= 0;
+      const V_lr = windV[IX(i-1,j)] * windV[IX(i+1,j)] <= 0;
+
+      if ((U_lr && V_ud) || (U_ud && V_lr)) {
+        dens[IX(i, j)] = 0;
+      }
+    }
+  }
+}
+
+
+
 
   renderDensity();
   if (simParams.showField) {
