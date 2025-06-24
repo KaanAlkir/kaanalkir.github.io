@@ -33,7 +33,7 @@ const simParams = {
 
   // display toggles
   showField:     true,
-  clearEquilibria: true,   // NEW: toggle for clearing equilibria
+  clearEquilibria: true,      // toggle for clearing equilibria
 
   // reset callback
   reset: () => {
@@ -197,15 +197,15 @@ function updateWindField() {
           windU[k] = cosA * wf;
           windV[k] = sinA * wf; break;
         case 'Vortex': {
-          const cx=(N+1)/2, cy=cx,
-                dx=i-cx, dy=j-cy,
-                len=Math.hypot(dx,dy)||1;
+          const cx = (N+1)/2, cy = cx,
+                dx = i - cx, dy = j - cy,
+                len = Math.hypot(dx,dy) || 1;
           windU[k] = -dy/len * wf;
           windV[k] =  dx/len * wf; break;
         }
         case 'Sinusoidal':
-          windU[k] = Math.sin(Math.PI*x) * wf;
-          windV[k] = Math.cos(Math.PI*y) * wf; break;
+          windU[k] = Math.sin(Math.PI * x) * wf;
+          windV[k] = Math.cos(Math.PI * y) * wf; break;
         case 'Custom':
           windU[k] = fNode.evaluate({x,y}) * wf;
           windV[k] = gNode.evaluate({x,y}) * wf; break;
@@ -247,14 +247,21 @@ canvas.addEventListener('mousemove', e => {
 const gui = new dat.GUI();
 const debUpdate = debounce(updateWindField, 50);
 
-gui.add(simParams, 'windType', ['Uniform','Vortex','Sinusoidal','Custom'])
-   .name('Wind Type')
-   .onChange(debUpdate);
-gui.add(simParams, 'dynF').name('dx/dt = f(x,y)').onFinishChange(debUpdate);
-gui.add(simParams, 'dynG').name('dy/dt = g(x,y)').onFinishChange(debUpdate);
+// windType control with onChange to enable/disable dyn controls
+const windTypeCtrl = gui.add(simParams, 'windType', ['Uniform','Vortex','Sinusoidal','Custom'])
+  .name('Wind Type')
+  .onChange(val => {
+    debUpdate();
+    updateDynCtrls(val);
+  });
+
+// capture dyn controllers
+const dynFCtrl = gui.add(simParams, 'dynF').name('dx/dt = f(x,y)').onFinishChange(debUpdate);
+const dynGCtrl = gui.add(simParams, 'dynG').name('dy/dt = g(x,y)').onFinishChange(debUpdate);
+
 gui.add(simParams, 'windForce', 0,20).step(0.1).name('Wind Force').onChange(debUpdate);
 gui.add(simParams, 'showField').name('Show Field & Axes');
-gui.add(simParams, 'clearEquilibria').name('Clear Equilibria');  // NEW button
+gui.add(simParams, 'clearEquilibria').name('Clear Equilibria');
 gui.add(simParams, 'reset').name('Reset');
 
 const adv = gui.addFolder('Advanced Simulation Options');
@@ -264,6 +271,16 @@ adv.add(simParams, 'velDamping',    0.90,1.00).step(0.001).name('Vel. Damping');
 adv.add(simParams, 'densDamping',   0.90,1.00).step(0.001).name('Dens. Damping');
 adv.add(simParams, 'diff',           0.0,0.02).step(0.0001).name('Diffusion');
 adv.add(simParams, 'visc',           0.0,0.001).step(0.0001).name('Viscosity');
+
+function updateDynCtrls(val) {
+  const isCustom = val === 'Custom';
+  [dynFCtrl, dynGCtrl].forEach(ctrl => {
+    ctrl.domElement.parentElement.style.pointerEvents = isCustom ? '' : 'none';
+    ctrl.domElement.parentElement.style.opacity       = isCustom ? '1' : '0.5';
+  });
+}
+// initialize enable/disable
+updateDynCtrls(simParams.windType);
 
 updateWindField();
 
@@ -362,28 +379,20 @@ function step() {
     dens[IX(N,i)] *= edgeDamp;
   }
 
-
-  //clear equilibria
-if (simParams.clearEquilibria) {
-  // skip the border
-  for (let j = 2; j < N; j++) {
-    for (let i = 2; i < N; i++) {
-      // horizontal U / vertical V test
-      const U_lr = windU[IX(i-1,j)] * windU[IX(i+1,j)] <= 0;
-      const V_ud = windV[IX(i,  j-1)] * windV[IX(i,  j+1)] <= 0;
-      // vertical U / horizontal V test
-      const U_ud = windU[IX(i,  j-1)] * windU[IX(i,  j+1)] <= 0;
-      const V_lr = windV[IX(i-1,j)] * windV[IX(i+1,j)] <= 0;
-
-      if ((U_lr && V_ud) || (U_ud && V_lr)) {
-        dens[IX(i, j)] = 0;
+  // clear equilibria
+  if (simParams.clearEquilibria) {
+    for (let j = 2; j < N; j++) {
+      for (let i = 2; i < N; i++) {
+        const U_lr = windU[IX(i-1,j)] * windU[IX(i+1,j)] <= 0;
+        const V_ud = windV[IX(i,  j-1)] * windV[IX(i,  j+1)] <= 0;
+        const U_ud = windU[IX(i,  j-1)] * windU[IX(i,  j+1)] <= 0;
+        const V_lr = windV[IX(i-1,j)] * windV[IX(i+1,j)] <= 0;
+        if ((U_lr && V_ud) || (U_ud && V_lr)) {
+          dens[IX(i, j)] = 0;
+        }
       }
     }
   }
-}
-
-
-
 
   renderDensity();
   if (simParams.showField) {
