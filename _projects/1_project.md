@@ -24,6 +24,11 @@ related_publications: false
 </div>
 
 
-{% highlight latex linenos %}
-{% include tex/nav-str_sim.tex %}
-{% endhighlight %}
+### 📄 Full Mathematical Documentation
+
+<iframe 
+  src="{{ '/assets/pdf/nav-str_sim.pdf'}}" 
+  width="100%" 
+  height="800px" 
+  style="border: none; background: var(--global-theme-color); color: var(--global-text-color);">
+</iframe>
