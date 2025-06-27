@@ -31,7 +31,7 @@ principles behind the simulation and how they guide its implementation.
 
 
 <iframe
-  src="{{ '/assets/pdf/nav-str_sim.pdf#toolbar=0&navpanes=0&scrollbar=1' | relative_url }}"
+  src="{{ '/assets/pdf/nav-str_sim.pdf#toolbar=0&navpanes=0&scrollbar=1&zoom=110' | relative_url }}"
   width="100%"
   height="800px"
   style="border: none; background: var(--global-theme-color); color: var(--global-text-color);">
