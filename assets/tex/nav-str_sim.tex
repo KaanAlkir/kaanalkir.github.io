@@ -1,0 +1,554 @@
+% ------------------------------------------------------------------
+%  Fluid Simulation Documentation
+%  (LaTeX source)
+% ------------------------------------------------------------------
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{physics}          % convenient macros: \grad, \div, …
+\usepackage{bm}               % bold math symbols
+\usepackage{siunitx}          % physical units
+\usepackage{algorithm,algpseudocode}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{mathtools}
+
+
+\title{}
+\author{}
+\date{}
+
+% ------------------------------------------------------------------
+\begin{document}
+
+% ------------------------------------------------------------------
+
+The following text presents a detailed and formal derivation of the equations underlying the fluid simulation above. It explains how the mathematical model is constructed from physical laws—mass conservation, momentum balance, and incompressibility—and how these are translated into the numerical scheme. The exposition emphasizes both conceptual clarity and mathematical precision, making it suitable for readers seeking to understand the theoretical principles behind the simulation and how they guide its implementation.
+
+\section{Governing equations}\label{sec:eq}
+Let $\Omega=[-1,1]^2\subset\mathbb{R}^2$ be a unit square with Cartesian
+coordinates $\bm{x}=(x,y)$, and let $t\ge 0$ denote time.
+The unknown fields are
+\[
+    \rho(\bm{x},t)\in\mathbb{R}_{\ge 0}, \qquad
+    \bm{u}(\bm{x},t)=(u,v)^{\!\top}\in\mathbb{R}^2, \qquad
+    p(\bm{x},t)\in\mathbb{R}.
+\]
+They satisfy the incompressible Navier–Stokes system with a
+passive‐scalar density:
+\begin{subequations}\label{eq:gov}
+\begin{align}
+\partial_t\rho + \bm{u}\!\cdot\!\grad\rho &= D_\rho \,\Delta\rho
+               + S_\rho,                                      \label{eq:rho}\\
+\partial_t\bm{u} + (\bm{u}\!\cdot\!\grad)\bm{u} &=
+      -\grad p + \nu\,\Delta\bm{u} + \bm{f},                  \label{eq:u}\\
+\div \bm{u} &= 0.                                             \label{eq:inc}
+\end{align}
+\end{subequations}
+% ------------------------------------------------------------------
+\subsection{Physical interpretation and modelling rationale}
+\label{subsec:meaning}
+
+\paragraph{(i) Passive–scalar transport.}
+Treat \eqref{eq:rho} as a \emph{control–volume budget}.  
+The left–hand side is the \emph{material derivative} of the
+concentration: it measures the instantaneous inventory change of a
+moving fluid parcel. On the right, \(D_\rho\nabla^{2}\rho\) is the divergence of the
+diffusive flux (Fick’s law), spreading the scalar down its own
+gradient, while \(S_\rho\) is an external source representing user
+injections.  
+In short, \textbf{material change = diffusive import + prescribed input}—
+a microscopic statement of the first law for a passive tracer.
+
+
+\paragraph{(ii) Momentum balance (Navier–Stokes).}The equation \eqref{eq:u} is Newton’s second law written \emph{per unit mass}.
+The material acceleration on the left is the ``expense column’’ in our
+ledger; it quantifies how rapidly a fluid element’s velocity state is
+being updated.
+The right-hand ``revenue column’’ itemises the forces that can pay that
+expense: \(-\nabla p\) is the reversible work done by pressure,
+\(\nu\nabla^{2}\bm{u}\) is the irreversible viscous diffusion of
+momentum, and \(\bm{f}\) is an externally imposed specific force (our
+programmable wind).
+The equality therefore asserts a pointwise force balance:
+\textbf{material acceleration = pressure drive + viscous drag + external forcing}.
+
+
+\paragraph{(iii) Incompressibility constraint.}
+Finally, \eqref{eq:inc} is the local volume-conservation ledger.
+The divergence operator tallies ``flow-in minus flow-out’’ for an
+infinitesimal cube; setting that tally to zero demands that no fluid
+mass is created or destroyed and that density remains constant along
+trajectories.
+This requirement motivates the projection step used later
+(Section~\ref{sec:projection}) and underlies the ubiquitous
+``pressure–Poisson'' formulation in fluid solvers. Thus, the statement is a strict bookkeeping rule:
+\textbf{incoming volumetric flux – outgoing volumetric flux = 0},
+everywhere and always, anchoring the solver to the physics of
+incompressible flow.
+
+\medskip
+\paragraph{Why projection?}
+Equation \eqref{eq:inc} imposes a \emph{pointwise} divergence‐free
+constraint.  A direct time‐stepping of \eqref{eq:u} would not preserve
+$\div\bm{u}=0$ at the discrete level.
+Chorin’s projection method resolves this by splitting the update into
+a provisional step followed by an orthogonal projection onto the space
+of solenoidal vector fields (Section~\ref{sec:projection}).
+
+% ------------------------------------------------------------------
+\section{Spatial discretisation}\label{sec:disc}
+\subsection{Centered grid \& indexing}
+The domain is tessellated by a uniform Cartesian grid with
+$N$ interior cells per direction; in code $N=200$.
+For simplicity we store \emph{all} variables at cell centres
+(\texttt{stable fluids} layout) and add a \emph{one‐cell halo} to
+encode boundary conditions.  The linear index
+\[
+    \mathrm{IX}(i,j) \;=\; i + (N+2)\,j,
+    \qquad 0\le i,j\le N+1,
+\]
+maps the 2-D lattice to the 1-D
+\texttt{Float32Array} buffers (\verb|u|, \verb|v|, \dots).
+With $(\Delta x,\Delta y)=(h,h)$ and $h = 1/N$, grid points are located
+at $(x_i,y_j) = ((i-\tfrac12)h,(j-\tfrac12)h)$ for $1\le i,j\le N$.
+
+% ------------------------------------------------------------------
+\section{Temporal discretisation}
+A fixed Eulerian time step $\Delta t=\texttt{dt}=0.01$ is used.
+The algorithm is operator-split into the following sub-steps
+(cf.\ Algorithm~\ref{alg:solver}):
+
+\begin{enumerate}
+\item \textbf{Velocity forcing} by the wind field $\bm{f}$
+      (explicit Euler).
+\item \textbf{Diffusion} of $\bm{u}$ via an
+      \emph{implicit} (unconditionally stable) solve
+      §\ref{sec:diffusion}.
+\item \textbf{Projection} to enforce $\div\bm{u}=0$
+      (§\ref{sec:projection}).
+\item \textbf{Advection} of $\bm{u}$
+      using semi-Lagrangian backtracing (§\ref{sec:advection}).
+\item \textbf{Second projection} (Strang-type splitting).
+\item \textbf{Transport} of $\rho$:
+      diffusion then advection.
+\item \textbf{Artificial damping} (velocity, density, boundary).
+\end{enumerate}
+
+Each step is mathematically well defined and conservative with respect
+to the quantities it advances; the only explicit dissipations are the
+physical $\nu,D_\rho$ and the user-adjustable damping factors
+$\gamma_v<1, \gamma_\rho<1$.
+
+% ------------------------------------------------------------------
+\section{Diffusion step}
+\label{sec:diffusion}
+
+\subsection{Implicit time integration and unconditional stability}
+
+For a generic scalar field \(\phi \in \{u,\,v,\,\rho\}\), representing either a velocity component or the passive density, the physical model reads
+\begin{equation}\label{eq:heat}
+  \partial_t \phi \;=\; \alpha \,\Delta \phi,
+  \qquad \alpha>0.
+\end{equation}
+Let $t^n=n\Delta t$ and denote by
+$\phi_{i,j}^{\,n}\approx \phi(x_i,y_j,t^n)$ the grid solution
+at $(i,j)\in\{1,\dots,N\}^2$.  
+Backward Euler in time combined with the five-point discrete Laplacian
+gives
+\begin{equation}\label{eq:BE}
+  \phi^{n+1}_{i,j} - \phi^{n}_{i,j}
+  \;=\;
+  a\!
+  \left(
+        \phi^{n+1}_{i-1,j}
+      + \phi^{n+1}_{i+1,j}
+      + \phi^{n+1}_{i,j-1}
+      + \phi^{n+1}_{i,j+1}
+      - 4\phi^{n+1}_{i,j}
+  \right), 
+  \qquad a:=\frac{\alpha\Delta t}{h^{2}}.
+\end{equation}
+
+
+\paragraph{Symmetric positive definiteness.}
+Rewriting \eqref{eq:BE} in vector form
+\((I-aL)\bm\phi^{n+1}=\bm\phi^{n}\),
+the matrix \(A:=I-aL\) is an M-matrix:
+symmetric, strictly diagonally dominant, and therefore
+positive definite for all \(a>0\).
+This guarantees uniqueness of \(\bm\phi^{n+1}\) and makes the
+Jacobi (point) iteration converge geometrically.
+Moreover, the scheme is \emph{unconditionally \(L^{2}\)-stable}.
+Indeed, multiplying \eqref{eq:BE} by \(\phi^{\,n+1}_{i,j}\) and summing
+over all grid indices yields the discrete energy decay
+\[
+   \|\phi^{n+1}\|_{2}^{2} - \|\phi^{n}\|_{2}^{2}
+   \;=\;
+   -\,a\,\|\nabla_{h}\phi^{n+1}\|_{2}^{2} \;\le\; 0,
+\]
+so no CFL restriction on \(\Delta t\) is required.
+
+
+\paragraph{Boundary operators.}
+The helper \verb|setBoundary| enforces:
+\[
+  \begin{aligned}
+    \phi_{0  ,j} &= \pm \,\phi_{1  ,j}, &
+    \phi_{N+1,j} &= \pm\,\phi_{N  ,j}, \\
+    \phi_{i,0  } &= \pm\,\phi_{i,1  }, &
+    \phi_{i,N+1} &= \pm\,\phi_{i,N  },
+  \end{aligned}
+  \qquad 1\le i,j\le N,
+\]
+with the sign choice $+$ (Neumann) for scalar fields and the sign
+$-$ (Dirichlet) for the normal velocity components;
+this choice preserves the discrete energy estimate used in the stability argument.
+
+\subsection{Consistency and global error}
+The truncation error of \eqref{eq:BE} is
+$\mathcal{O}(\Delta t + h^{2})$, so the scheme is
+first-order accurate in time and second-order in space.  Combined with
+the $L^{2}$-stability above, the Lax–Richtmyer theorem yields global
+error $\mathcal{O}(\Delta t + h^{2})$ for smooth solutions.
+
+
+
+% ------------------------------------------------------------------
+% ---------------------------------------------------------------
+\section{Advection step}\label{sec:advection}
+
+\subsection{Geometric interpretation and continuous formulation}
+Let $\bm{w}:\Omega\times[0,T]\to\mathbb{R}^{d}$ denote a scalar or
+vector field being transported by a time-dependent velocity
+$\bm{u}(\bm{x},t)$. The advection equation
+\begin{equation}\label{eq:adv}
+  \partial_t \bm{w} + \bm{u}\cdot\nabla \bm{w} = 0
+  \qquad\textit{with} \quad
+  \bm{w}(\bm{x},t_0) = \bm{w}^0(\bm{x})
+\end{equation}
+This means that as each fluid parcel moves through space, it carries its initial field value with it unchanged.
+To describe this transport formally, we introduce the \emph{flow map}
+$\bm{X}(t_0; t, \bm{x})$, which gives the position at time $t_0$
+of the fluid particle that arrives at location $\bm{x}$ at time $t$.
+
+Then the solution to \eqref{eq:adv} at time $t^{n+1} = t^n + \Delta t$ is:
+\begin{equation}\label{eq:adv-exact}
+  \bm{w}^{n+1}(\bm{x}) =
+  \bm{w}^n\!\bigl(\bm{X}(t^n; t^{n+1}, \bm{x})\bigr),
+\end{equation}
+
+This is conceptually natural: to find the field value at point
+$\bm{x}$ and time $t^{n+1}$, trace the characteristic backwards to
+where the fluid parcel came from, and recover its earlier value there.
+
+\subsection{Semi-Lagrangian discretisation}
+Computing the departure point $\bm{X}(t^n; t^{n+1}, \bm{x})$ exactly
+would mean following the particle’s path through the velocity field for an
+entire time step—a costly operation in real time. Instead, we approximate the backward trajectory by a single
+explicit Euler step:
+\[
+  \tilde{\bm{x}} = \bm{x} - \Delta t\, \bm{u}^{n}(\bm{x}).
+\]
+Because $\tilde{\bm{x}}$ is almost never located \emph{exactly} on a
+grid node, we must estimate the previous field value
+$\bm{w}^{\,n}$ there.  Define the interpolation operator
+\(\mathcal{I} : \bigl\{\bm{w}_{i,j}\bigr\}\!\to C^{0}(\Omega)\) by
+
+\[
+  \;
+  \mathcal{I}\!\bigl[\bm{w}^{\,n}\bigr](x,y)
+  \;:=\;
+  \sum_{m=0}^{1}\sum_{n=0}^{1}
+     \lambda_{mn}(x,y)\,
+     \bm{w}^{\,n}_{\,i+m,\,j+n}\ ,
+\]
+where \((i,j)\) is the lower-left grid node of the cell that contains
+\((x,y)\) and the bilinear shape functions are
+\[
+  \lambda_{00} = (1-\xi)(1-\eta),
+  \quad
+  \lambda_{10} = \xi(1-\eta),
+  \quad
+  \lambda_{01} = (1-\xi)\eta,
+  \quad
+  \lambda_{11} = \xi\eta,
+\]
+with
+$\xi = \dfrac{x - x_i}{h}\in[0,1]$,
+$\eta = \dfrac{y - y_j}{h}\in[0,1]$.
+Each $\lambda_{mn}\ge 0$ and
+$\sum_{m,n}\lambda_{mn}=1$, so the operator is
+\emph{contractive} in every $L^{p}$ norm.
+
+The semi-Lagrangian update therefore reads
+\begin{equation}\label{eq:SL}
+  \bm{w}^{\,n+1}(\bm{x})
+  \;=\;
+  \mathcal{I}\!\bigl[\bm{w}^{\,n}\bigr](\tilde{\bm{x}}),
+\end{equation}
+i.e.\ “sample the old field at the estimated upstream location.” This construction mimics a \emph{Lagrangian} perspective—track what a
+fluid particle carries—while keeping the data fixed on an Eulerian
+grid. 
+
+The key advantage is unconditional stability: regardless of
+$\Delta t$, the method cannot introduce new extrema, since it simply
+samples a convex combination of previous values.
+
+\paragraph{Stability.}
+Because update \eqref{eq:SL} merely interpolates existing data,
+it is contractive in every $L^{p}$ norm,
+\(
+   \|\bm w^{\,n+1}\|_{p}\!\le\!\|\bm w^{\,n}\|_{p}
+\)
+for $1\!\le\!p\!\le\!\infty$;
+hence no Courant restriction and no spurious extrema arise.
+This unconditional stability—at first-order accuracy in time and
+second-order in space—is the key trade-off that makes the method
+ideal for real-time graphics.
+
+
+
+
+
+% ------------------------------------------------------------------
+
+
+
+% ---------------------------------------------------------------
+\section{Pressure projection}
+\label{sec:projection}
+
+At each time step, the provisional velocity field
+$\bm{u}^{\!*}$ produced by forcing, diffusion, or advection may violate
+the incompressibility constraint $\nabla \cdot \bm{u} = 0$.  
+To restore divergence-freeness, we perform a \emph{projection} onto the
+subspace of solenoidal fields.
+
+
+\subsection*{Helmholtz decomposition and pressure correction}
+
+Let $\bm{v} : \Omega_h \to \mathbb{R}^2$ be a discrete vector field defined on a regular Cartesian grid $\Omega_h$ with uniform spacing $h > 0$. A fundamental result in vector calculus, known as the \emph{Helmholtz decomposition}, states that any sufficiently regular vector field can be uniquely decomposed as the sum of a divergence-free component and a gradient field. On the discrete grid, this takes the form
+\begin{equation}\label{eq:helmholtz}
+  \bm{v} = \bm{v}_{\mathrm{div}} + \nabla_h \pi,
+\end{equation}
+where:
+\begin{itemize}
+  \item $\bm{v}_{\mathrm{div}}$ is a vector field satisfying $\nabla_h^{*} \bm{v}_{\mathrm{div}} = 0$, i.e., it is discretely divergence-free,
+  \item $\nabla_h \pi$ is the discrete gradient of a scalar field $\pi : \Omega_h \to \mathbb{R}$,
+  \item $\nabla_h^{*}$ denotes the discrete divergence operator, defined as the negative adjoint of the gradient with respect to the grid inner product.
+\end{itemize}
+
+This decomposition is orthogonal in the discrete $L^2$ inner product and is unique up to an additive constant in $\pi$.
+
+On the regular grid with spacing $h$, the discrete gradient operator $\nabla_h$ maps scalar grid functions $\pi_{i,j}$ to vector fields via central differences:
+\[
+(\nabla_h \pi)_{i,j} =
+\left( \frac{\pi_{i+1,j} - \pi_{i-1,j}}{2h},
+       \frac{\pi_{i,j+1} - \pi_{i,j-1}}{2h} \right).
+\]
+The discrete divergence operator $\nabla_h^{*}$ acts on a vector field $\bm{v}_{i,j} = (u_{i,j}, v_{i,j})$ as:
+\[
+(\nabla_h^{*} \bm{v})_{i,j} =
+\frac{u_{i+1,j} - u_{i-1,j}}{2h}
++ \frac{v_{i,j+1} - v_{i,j-1}}{2h}.
+\]
+These satisfy the identity $\langle \bm{v}, \nabla_h \pi \rangle_h = -\langle \nabla_h^* \bm{v}, \pi \rangle_h$ under the grid $L^2$ inner product, confirming that $\nabla_h^*$ is indeed the negative adjoint of $\nabla_h$.
+
+
+
+\medskip
+
+In the context of incompressible fluid simulation, we apply this decomposition to the provisional velocity field $\bm{u}^\ast$, which results from the combination of advection, external forcing, and viscosity but does not generally satisfy the incompressibility condition $\nabla \cdot \bm{u} = 0$.
+
+To recover a physically admissible velocity field $\bm{u}^{n+1}$ that is divergence-free, we define:
+\[
+   \bm{u}^{n+1} := \bm{u}^\ast - \nabla_h \pi,
+\]
+where $\pi$ is chosen such that the divergence of $\bm{u}^{n+1}$ vanishes:
+\[
+   \nabla_h^{*} \bm{u}^{n+1}
+   = \nabla_h^{*}(\bm{u}^\ast - \nabla_h \pi)
+   = \nabla_h^{*} \bm{u}^\ast - \Delta_h \pi
+   = 0.
+\]
+This leads to the discrete Poisson equation for the pressure correction:
+\begin{equation}\label{eq:proj-poisson}
+   \Delta_h \pi = \nabla_h^{*} \bm{u}^\ast,
+\end{equation}
+where $\Delta_h := \nabla_h^{*} \nabla_h$. In practice, the Poisson equation \eqref{eq:proj-poisson} is solved numerically using the same iterative Jacobi (point) method as in the diffusion step; see Section~\ref{sec:diffusion}.
+
+
+We impose homogeneous Neumann boundary conditions for $\pi$, corresponding to the physical condition of no normal flow at the domain boundaries:
+\[
+\partial_n \pi = 0 \quad \text{on } \partial \Omega_h.
+\]
+
+Since $\pi$ is determined only up to an additive constant, the solution to~\eqref{eq:proj-poisson} is not unique. However, the velocity field $\bm{u}^{n+1}$ is fully determined, because the gradient of a constant vanishes.
+
+\medskip
+
+In summary, the pressure correction $\pi$ serves to remove the non-solenoidal component of the provisional velocity field $\bm{u}^\ast$, producing an updated velocity $\bm{u}^{n+1}$ that satisfies the incompressibility condition exactly at the discrete level.
+
+
+This projection step is applied both before and after the advection stage as part of a Strang-type operator splitting; see Section~\ref{sec:algo} for the full time-stepping sequence.
+
+
+
+\subsection*{Stability and energy estimate}
+
+By orthogonality of the decomposition, the projection does not increase
+kinetic energy:
+\[
+   \|\bm{u}^{n+1}\|_2 = \|\bm{u}^\ast\|_2 - \|\nabla_h \pi\|_2,
+\]
+ensuring that no artificial energy is introduced when enforcing
+incompressibility. This mirrors the continuous \(L^2\)-energy estimate
+and preserves the dissipative nature of the Navier–Stokes evolution.
+
+The discrete $L^2$ norm is defined as
+\[
+\|\bm{u}\|_2 := h^2 \sum_{i,j} \left( u_{i,j}^2 + v_{i,j}^2 \right),
+\]
+with the corresponding inner product
+\(
+\langle \bm{u}, \bm{v} \rangle := h^2 \sum_{i,j} (u_{i,j} v_{i,j} + v_{i,j} w_{i,j}).
+\)
+
+
+% ------------------------------------------------------------------
+\section{Wind forcing}
+The external force field $\bm{f}(x, y)$, referred to as the wind field, is defined pointwise on the domain according to one of the following user-selectable modes:
+\[
+  \bm{f}(x, y) =
+  \begin{cases}
+    f_0 \begin{pmatrix} \cos\theta \\ \sin\theta \end{pmatrix}, 
+      & \text{Uniform (constant direction)}, \\[10pt]
+    f_0 \begin{pmatrix} -\widehat{y}(x, y) \\ \widehat{x}(x, y) \end{pmatrix}, 
+      & \text{Vortex (solid-body rotation)}, \\[10pt]
+    f_0 \begin{pmatrix} \sin(\pi x) \\ \cos(\pi y) \end{pmatrix}, 
+      & \text{Sinusoidal}, \\[10pt]
+    f_0 \begin{pmatrix} f(x, y) \\ g(x, y) \end{pmatrix},
+      & \text{Custom (user-defined)},
+  \end{cases}
+\]
+where:
+\begin{itemize}
+  \item $f_0 \in [0, 20]$ is the user-defined magnitude of the wind,
+  \item $\theta \in [0, 2\pi)$ specifies the angle of uniform flow,
+  \item $(\widehat{x}(x,y), \widehat{y}(x,y)) := \frac{(x - x_c,\; y - y_c)}{\sqrt{(x - x_c)^2 + (y - y_c)^2}}$ is the unit radial vector from the domain center $(x_c, y_c)$ (used in the vortex mode),
+  \item $f(x,y)$ and $g(x,y)$ are arbitrary scalar functions supplied by the user in the Custom mode.
+\end{itemize}
+
+Note that all functions are defined over the rescaled domain $[-1, 1]^2$, where the origin corresponds to the center of the canvas. 
+% ------------------------------------------------------------------
+\section{Density injection and damping}
+
+User interaction is implemented as an external source term in the density equation~\eqref{eq:rho}. Specifically, a mouse drag triggers the addition of a source term
+\[
+  S_\rho(x, y, t) = \rho_0\, \mathbf{1}_{B_r(x_0, y_0)}(x, y),
+\]
+where $\rho_0$ is the prescribed injection strength, and $B_r(x_0, y_0)$ is a ball of radius $r$ centered at the injection location $(x_0, y_0)$. The indicator function $\mathbf{1}_{B_r}$ ensures that the density is injected only within this local region. In addition to modifying $\rho$, a small velocity impulse is applied to $\bm{u}$ in the direction of the drag, simulating physical stirring.
+
+\medskip
+
+To prevent unbounded accumulation of density and numerical artefacts during long-time integration, artificial damping is applied after each time step:
+\[
+  \bm{u} \leftarrow \gamma_v\, \bm{u},
+  \qquad
+  \rho \leftarrow \gamma_\rho\, \rho,
+  \qquad
+  \text{with} \quad \gamma_v, \gamma_\rho \lesssim 1.
+\]
+These coefficients serve as phenomenological models for subgrid-scale dissipation and help stabilize the simulation while preserving large-scale dynamics. Both $\gamma_v$ and $\gamma_\rho$ are user-configurable parameters.
+
+
+% ------------------------------------------------------------------
+\section{Algorithmic summary}\label{sec:algo}
+\begin{algorithm}[H]
+\caption{Advance one time step $t^n \to t^{n+1}$}\label{alg:solver}
+\begin{algorithmic}[1]
+  \Procedure{Step}{}
+    \vspace{.5em}
+    \If{mouse is dragging}
+      \State \textbf{Inject:} 
+        $\rho \mathrel{+}= S_\rho$,\;
+        $u \mathrel{+}= \Delta u$,\;
+        $v \mathrel{+}= \Delta v$
+      \Comment{density source and stirring impulse}
+    \EndIf
+    \vspace{.5em}
+    \State \textbf{Force:} 
+      $u[k]\mathrel{+}= \Delta t\,\mathrm{windU}[k]$, 
+      $v[k]\mathrel{+}= \Delta t\,\mathrm{windV}[k]$  
+      \Comment{apply wind field}
+    \vspace{.5em}
+    \State \textbf{Diffuse:} 
+      \Call{Diffuse}{1, $u_0$, $u$, $\nu$};\;
+      \Call{Diffuse}{2, $v_0$, $v$, $\nu$}
+      \Comment{implicit viscous solve}
+    \vspace{.5em}
+    \State \textbf{Project:} 
+      \Call{Project}{$u_0,v_0,p,\mathrm{div}$}  
+      \Comment{enforce $\nabla\cdot\bm u=0$}
+    \vspace{.5em}
+    \State \textbf{Advect:} 
+      \Call{Advect}{1, $u$, $u_0$, $u_0$, $v_0$};\;
+      \Call{Advect}{2, $v$, $v_0$, $u_0$, $v_0$}
+      \Comment{semi-Lagrangian transport}
+    \vspace{.5em}
+    \State \textbf{Project:} 
+      \Call{Project}{$u,v,p,\mathrm{div}$}  
+      \Comment{remove post-advection divergence}
+    \vspace{.5em}
+    \State \textbf{Density steps:}
+      \Call{Diffuse}{0, $\rho_0$, $\rho$, $D_\rho$};\;
+      \Call{Advect}{0, $\rho$, $\rho_0$, $u$, $v$}
+      \Comment{diffuse then advect scalar}
+    \vspace{.5em}
+    \State \textbf{Damping:} 
+      $u\leftarrow \gamma_v\,u$, 
+      $v\leftarrow \gamma_v\,v$, 
+      $\rho\leftarrow \gamma_\rho\,\rho$
+      \Comment{global decay}
+    \vspace{.5em}
+    \State \textbf{Edge damping:} 
+      halve $\rho$ on boundary cells  
+      \Comment{suppress artefacts at domain edges}
+    \vspace{.5em}
+    \State \textbf{Render:} 
+      \Call{RenderDensity}{};\;
+      \If{\texttt{showField}}
+        \Call{DrawField}{};\;\Call{DrawAxes}{}
+      \EndIf
+  \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+
+% ------------------------------------------------------------------
+
+\bigskip
+\noindent\textbf{Further reading.}
+\begin{itemize}\setlength\itemsep{0.4em}
+
+\item J.\ Stam, \emph{Stable Fluids}, SIGGRAPH 1999.   % already present
+\item E.\ Guendelman et al., \emph{Semi-Lagrangian Controllable
+      Fluids}, ACM TOG 2012.   % already present
+
+\item R.\ Bridson, \emph{Fluid Simulation for Computer Graphics},
+      3rd ed., CRC Press, 2015.  A concise, code-oriented textbook that
+      covers projection solvers, semi-Lagrangian advection, vorticity
+      confinement, and GPU tips.
+
+\item J.\ Kim and P.\ Moin, “Application of a fractional-step method to
+      incompressible Navier–Stokes equations,” \emph{J.\ Comp.\ Phys.},
+      59 (1985) 308-323.  The classic finite-difference projection
+      paper used by many CFD codes.
+
+
+
+\end{itemize}
+
+\end{document}
