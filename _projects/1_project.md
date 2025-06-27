@@ -23,8 +23,8 @@ related_publications: false
   </div>
 </div>
 
-{% raw %}
+
 {% highlight latex linenos %}
 {% include_relative ../assets/tex/nav-str_sim.tex %}
 {% endhighlight %}
-{% endraw %}
+
