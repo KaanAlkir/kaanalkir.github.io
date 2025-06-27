@@ -261,7 +261,7 @@ const dynGCtrl = gui.add(simParams, 'dynG').name('dy/dt = g(x,y)').onFinishChang
 
 gui.add(simParams, 'windForce', 0,20).step(0.1).name('Wind Force').onChange(debUpdate);
 gui.add(simParams, 'showField').name('Show Field ');
-gui.add(simParams, 'clearEquilibria').name('Exclude Equilibrium');
+gui.add(simParams, 'clearEquilibria').name('No Equilibrium');
 gui.add(simParams, 'reset').name('Reset');
 
 const adv = gui.addFolder('Advanced Simulation Options');
