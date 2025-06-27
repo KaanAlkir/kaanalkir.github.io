@@ -25,6 +25,5 @@ related_publications: false
 
 
 {% highlight latex linenos %}
-{% include_relative ../assets/tex/nav-str_sim.tex %}
+{% include tex/nav-str_sim.tex %}
 {% endhighlight %}
-
