@@ -24,7 +24,7 @@ related_publications: false
 </div>
 
 
-### 📄 Full Mathematical Documentation
+### 📄 Mathematical Documentation
 
 <iframe 
   src="{{ '/assets/pdf/nav-str_sim.pdf'}}" 
