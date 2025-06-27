@@ -24,7 +24,10 @@ related_publications: false
 </div>
 
 
-### 📄 Mathematical Documentation
+The following document presents a detailed and formal derivation of the equations underlying the fluid simulation above. It explains how the mathematical model is constructed from physical laws—mass conservation, momentum balance, and incompressibility—and how these
+are translated into the numerical scheme. The exposition emphasizes both conceptual clarity
+and mathematical precision, making it suitable for readers seeking to understand the theoretical
+principles behind the simulation and how they guide its implementation.
 
 <iframe 
   src="{{ '/assets/pdf/nav-str_sim.pdf'}}" 
