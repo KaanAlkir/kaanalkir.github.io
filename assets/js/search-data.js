@@ -412,16 +412,16 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
-            },},{id: "news-a-simple-inline-announcement",
-          title: 'A simple inline announcement.',
-          description: "",
-          section: "News",},{id: "news-a-long-announcement-with-details",
+            },},{id: "news-a-long-announcement-with-details",
           title: 'A long announcement with details',
           description: "",
           section: "News",handler: () => {
               window.location.href = "/news/announcement_2/";
             },},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
           title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
+          description: "",
+          section: "News",},{id: "news-submitted-a-paper-to-the-ieee-conference-on-decision-and-control-cdc-2025",
+          title: 'Submitted a paper to the IEEE Conference on Decision and Control (CDC 2025)....',
           description: "",
           section: "News",},{id: "projects-interactive-fluid-simulation-of-navier-stokes-driven-dynamical-systems-in-2-d",
           title: 'Interactive Fluid Simulation of Navier–Stokes-Driven Dynamical Systems in 2-D',
