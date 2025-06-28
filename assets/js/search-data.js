@@ -426,11 +426,6 @@ ninja.data = [{
           description: "This project is an interactive simulation of a 2D dynamical system coupled with a fluid flow based on the Navier–Stokes equations. Users can adjust the wind field type and parameters, including custom vector fields, to see how they affect the motion of particles and scalar density. It’s designed to help visualize how external flows influence dynamical behavior in a simple and intuitive way.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_project/";
-            },},{id: "projects-project-2",
-          title: 'project 2',
-          description: "a project with a background image and giscus comments",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/2_project/";
             },},{id: "projects-project-3-with-very-long-name",
           title: 'project 3 with very long name',
           description: "a project that redirects to another website",
