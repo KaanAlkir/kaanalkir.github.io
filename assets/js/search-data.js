@@ -415,12 +415,10 @@ ninja.data = [{
             },},{id: "news-submitted-a-paper-to-the-ieee-conference-on-decision-and-control-cdc-2025",
           title: 'Submitted a paper to the IEEE Conference on Decision and Control (CDC 2025)....',
           description: "",
-          section: "News",},{id: "news-a-long-announcement-with-details",
-          title: 'A long announcement with details',
+          section: "News",},{id: "news-presented-a-poster-at-stochastic-days-2025-özyeğin-university",
+          title: 'Presented a poster at Stochastic Days 2025, Özyeğin University.',
           description: "",
-          section: "News",handler: () => {
-              window.location.href = "/news/announcement_2/";
-            },},{id: "news-attended-the-probability-and-analysis-summer-school-a-two-week-program-at-boğaziçi-university",
+          section: "News",},{id: "news-attended-the-probability-and-analysis-summer-school-a-two-week-program-at-boğaziçi-university",
           title: 'Attended the “Probability and Analysis Summer School”, a two-week program at Boğaziçi University....',
           description: "",
           section: "News",},{id: "projects-interactive-fluid-simulation-of-navier-stokes-driven-dynamical-systems-in-2-d",
