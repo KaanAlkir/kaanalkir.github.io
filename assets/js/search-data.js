@@ -412,18 +412,18 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
-            },},{id: "news-a-long-announcement-with-details",
-          title: 'A long announcement with details',
-          description: "",
-          section: "News",handler: () => {
-              window.location.href = "/news/announcement_2/";
             },},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
           title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
           description: "",
           section: "News",},{id: "news-submitted-a-paper-to-the-ieee-conference-on-decision-and-control-cdc-2025",
           title: 'Submitted a paper to the IEEE Conference on Decision and Control (CDC 2025)....',
           description: "",
-          section: "News",},{id: "projects-interactive-fluid-simulation-of-navier-stokes-driven-dynamical-systems-in-2-d",
+          section: "News",},{id: "news-a-long-announcement-with-details",
+          title: 'A long announcement with details',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_2/";
+            },},{id: "projects-interactive-fluid-simulation-of-navier-stokes-driven-dynamical-systems-in-2-d",
           title: 'Interactive Fluid Simulation of Navier–Stokes-Driven Dynamical Systems in 2-D',
           description: "This project is an interactive simulation of a 2D dynamical system coupled with a fluid flow based on the Navier–Stokes equations. Users can adjust the wind field type and parameters, including custom vector fields, to see how they affect the motion of particles and scalar density. It’s designed to help visualize how external flows influence dynamical behavior in a simple and intuitive way.",
           section: "Projects",handler: () => {
