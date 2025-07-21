@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Accepted paper at the IEEE Conference on Decision and Control (CDC 2025).
+Paper peer-reviewed and accepted at the IEEE Conference on Decision and Control (CDC 2025).
