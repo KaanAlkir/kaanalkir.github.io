@@ -412,14 +412,14 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
-            },},{id: "news-submitted-a-paper-to-the-ieee-conference-on-decision-and-control-cdc-2025",
-          title: 'Submitted a paper to the IEEE Conference on Decision and Control (CDC 2025)....',
-          description: "",
-          section: "News",},{id: "news-presented-a-poster-at-stochastic-days-2025-özyeğin-university",
+            },},{id: "news-presented-a-poster-at-stochastic-days-2025-özyeğin-university",
           title: 'Presented a poster at Stochastic Days 2025, Özyeğin University.',
           description: "",
           section: "News",},{id: "news-attended-the-probability-and-analysis-summer-school-a-two-week-program-at-boğaziçi-university",
           title: 'Attended the “Probability and Analysis Summer School”, a two-week program at Boğaziçi University....',
+          description: "",
+          section: "News",},{id: "news-accepted-paper-at-the-ieee-conference-on-decision-and-control-cdc-2025",
+          title: 'Accepted paper at the IEEE Conference on Decision and Control (CDC 2025).',
           description: "",
           section: "News",},{id: "projects-interactive-fluid-simulation-of-navier-stokes-driven-dynamical-systems-in-2-d",
           title: 'Interactive Fluid Simulation of Navier–Stokes-Driven Dynamical Systems in 2-D',
