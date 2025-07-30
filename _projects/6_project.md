@@ -21,13 +21,15 @@ x_{t+1} = A x_t + w_t, \quad y_t = C x_t + v_t
 
 where \\( w_t \sim \mathcal{N}(0, I) \\) and \\( v_t \sim \mathcal{N}(0, 1) \\) are independent noise terms. The system aims to estimate the hidden state \\( x_t \\) through noisy observations \\( y_t \\), using a recursive update known as the **Kalman filter**.
 
-The Kalman filter updates the state estimate \( \tilde{m}_t = \mathbb{E}[x_t \mid y_{0:t}] \) recursively using:
+### Estimator and Riccati Update
 
-\[
+The Kalman filter updates the state estimate \\( \tilde{m}_t = E[x_t \mid y_{0:t}] \\) recursively using:
+
+\\[
 \tilde{m}_t = A \tilde{m}_{t-1} + \Sigma_{t \mid t-1} C^\top \left(C \Sigma_{t \mid t-1} C^\top + V\right)^{-1} \left(y_t - C A \tilde{m}_{t-1}\right)
-\]
+\\]
 
-where \( \Sigma_{t \mid t-1} \) is the prediction covariance. The covariance update follows the Riccati recursion:
+where \\( \Sigma_{t|t-1} \\) is the prediction covariance. The covariance update follows the Riccati recursion:
 
 \\[
 \Sigma_{t+1|t} = A \Sigma_{t|t-1} A^\top + W - (A \Sigma_{t|t-1} C^\top)(C \Sigma_{t|t-1} C^\top + V)^{-1}(C \Sigma_{t|t-1} A^\top)
