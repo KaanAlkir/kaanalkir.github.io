@@ -69,6 +69,16 @@ The convergence of the filter is evaluated by tracking the following quantities 
 - \\( \|x_t - \tilde{m}_t\| \\): Estimation error (blue line)  
 - \\( \|\Sigma_t\|_F \\): Frobenius norm of the covariance matrix (black line)
 
+<div class="row justify-content-sm-center">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets//kalman_1.png" title="Kalman Filter – State Norms" class="img-fluid rounded z-depth-1" %}
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets//kalman_2.png" title="Kalman Filter – Estimation Error" class="img-fluid rounded z-depth-1" %}
+  </div>
+</div>
+
+
 The resulting plot illustrates how the estimator converges to the true state and how the uncertainty (captured by \\( \Sigma \\)) decreases over time.
 
 > For convergence, it is important that all eigenvalues of matrix \\( A \\) lie strictly inside the unit circle.
