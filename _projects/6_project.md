@@ -29,12 +29,12 @@ The Kalman filter updates the state estimate \\( \tilde{m}_t = \mathbb{E}[x_t \m
 \tilde{m}_t = A \tilde{m}_{t-1} + \Sigma_{t \mid t-1} C^\top \left(C \Sigma_{t \mid t-1} C^\top + V\right)^{-1} \left(y_t - C A \tilde{m}_{t-1}\right)
 \\]
 
-
 where \\( \Sigma_{t|t-1} \\) is the prediction covariance. The covariance update follows the Riccati recursion:
 
 \\[
-\Sigma_{t+1|t} = A \Sigma_{t|t-1} A^\top + W - (A \Sigma_{t|t-1} C^\top)(C \Sigma_{t|t-1} C^\top + V)^{-1}(C \Sigma_{t|t-1} A^\top).
+\Sigma_{t+1|t} = A \Sigma_{t|t-1} A^\top + W - (A \Sigma_{t|t-1} C^\top)(C \Sigma_{t|t-1} C^\top + V)^{-1}(C \Sigma_{t|t-1} A^\top)
 \\]
+
 
 Implementation of these iterations into Python is as follows:
 ```python
