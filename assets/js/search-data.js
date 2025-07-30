@@ -39,7 +39,7 @@ ninja.data = [{
           },
         },{id: "nav-teaching",
           title: "Teaching",
-          description: "Materials for courses you taught. Replace this text with your description.",
+          description: "This page lists the undergraduate mathematics courses I have assisted at Bilkent University.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/teaching/";
