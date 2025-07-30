@@ -8,8 +8,9 @@ nav_order: 6
 ---
 
 
-| Year | Course                          | Institution           | Role                                     |
+| Year | Code       |       Course            | Institution           | Role                                     |
 |------|---------------------------------|-----------------------|-----------------------------------------------|
-| FALL | Introduction to Machine Learning| Bilkent University | Teaching Assistant      |
-| 2022 | Advanced Data Science           | Bilkent University | Teaching Assistant   |
-| 2023 | Computational Linguistics       | Bilkent University | Teaching Assistant |
+| Fall 2023 | MATH 106 | Introduction to Calculus II     | Bilkent University | Teaching Assistant      |
+| Spring 2024  |  MATH 105  |  Introduction to Calculus I     | Bilkent University | Teaching Assistant   |
+| Fall 2025 |     MATH 102    |  Calculus II       | Bilkent University | Teaching Assistant |
+| Spring 2025 |     MATH 102    |  Calculus II       | Bilkent University | Teaching Assistant |
