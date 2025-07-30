@@ -428,7 +428,7 @@ ninja.data = [{
               window.location.href = "/projects/1_project/";
             },},{id: "projects-kalman-filter-state-estimation",
           title: 'Kalman Filter State Estimation',
-          description: "Stochastic Kalman upgrade equations implemented to python",
+          description: "Simulation of a discrete-time Kalman filter in Python, illustrating the convergence of the state estimate, estimation error, and covariance norm over time.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/6_project/";
             },},{
