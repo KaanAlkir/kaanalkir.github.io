@@ -44,7 +44,7 @@ sigma = A @ sigma @ A.T + I - A @ sigma @ C_T * ((C * sigma @ A.T) / (C @ sigma 
 
 ### Simulation and Visualization
 
-In the simulation, we use the following matrices as an example:
+In the simulation, we use the following matrices as an example, they can be replaced with any N × N and N × 1 matrices:
 
 \\[
 A =
