@@ -7,74 +7,60 @@ importance: 4
 category: work
 ---
 
-Every project has a beautiful feature showcase page.
-It's easy to include images in a flexible 3-column grid format.
-Make your photos 1/3, 2/3, or full width.
+## Kalman Filter Convergence
 
-To give your project a background in the portfolio page, just add the img tag to the front matter like so:
+This project visualizes the convergence behavior of a Kalman filter applied to a linear dynamical system described by the stochastic equations:
 
-    ---
-    layout: page
-    title: project
-    description: a project with a background image
-    img: /assets/img/12.jpg
-    ---
+\[
+x_{t+1} = A x_t + w_t, \quad y_t = C x_t + v_t,
+\]
 
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/1.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/3.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/5.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Caption photos easily. On the left, a road goes through a tunnel. Middle, leaves artistically fall in a hipster photoshoot. Right, in another hipster photoshoot, a lumberjack grasps a handful of pine needles.
-</div>
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/5.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    This image can also have a caption. It's like magic.
-</div>
+where \( w_t \sim \mathcal{N}(0, I) \) and \( v_t \sim \mathcal{N}(0, 1) \) are independent noise terms. The system aims to estimate the hidden state \( x_t \) through noisy observations \( y_t \), using a recursive update known as the **Kalman filter**.
 
-You can also put regular text between your rows of images.
-Say you wanted to write a little bit about your project before you posted the rest of the images.
-You describe how you toiled, sweated, _bled_ for your project, and then... you reveal its glory in the next row of images.
+### Estimator and Riccati Update
 
-<div class="row justify-content-sm-center">
-    <div class="col-sm-8 mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/6.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm-4 mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/11.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    You can also have artistically styled 2/3 + 1/3 images, like these.
-</div>
+The Kalman filter updates the state estimate \( \tilde{m}_t = \mathbb{E}[x_t \mid y_{0:t}] \) recursively using:
 
-The code is simple.
-Just wrap your images with `<div class="col-sm">` and place them inside `<div class="row">` (read more about the <a href="https://getbootstrap.com/docs/4.4/layout/grid/">Bootstrap Grid</a> system).
-To make images responsive, add `img-fluid` class to each; for rounded corners and shadows use `rounded` and `z-depth-1` classes.
-Here's the code for the last row of images above:
+\[
+\tilde{m}_t = A \tilde{m}_{t-1} + \Sigma_{t|t-1} C^\top (C \Sigma_{t|t-1} C^\top + V)^{-1} (y_t - C A \tilde{m}_{t-1}),
+\]
 
-{% raw %}
+where \( \Sigma_{t|t-1} \) is the prediction covariance. The covariance update follows the Riccati recursion:
 
-```html
-<div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/6.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-  </div>
-  <div class="col-sm-4 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/11.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-  </div>
-</div>
-```
+\[
+\Sigma_{t+1|t} = A \Sigma_{t|t-1} A^\top + W - (A \Sigma_{t|t-1} C^\top)(C \Sigma_{t|t-1} C^\top + V)^{-1}(C \Sigma_{t|t-1} A^\top).
+\]
 
-{% endraw %}
+### Simulation and Visualization
+
+In the simulation, we use the following matrices as an example:
+
+\[
+A =
+\begin{bmatrix}
+0.8 & 0 & 0 & 0 & 0.2 \\
+0 & 0.1 & 0.1 & 0 & 0 \\
+0 & 0 & 0.3 & 0 & 0.1 \\
+0 & 0 & 0 & 0.1 & 0 \\
+0.1 & 0.2 & 0 & 0 & 0
+\end{bmatrix},
+\quad
+C =
+\begin{bmatrix}
+0.1 & 0 & 0 & 0 & 0.2
+\end{bmatrix}
+\]
+
+The convergence of the filter is evaluated by tracking the following quantities over time:
+
+- \( \|x_t\| \): Norm of the true state (orange line)
+- \( \|\tilde{m}_t\| \): Norm of the estimated state (green line)
+- \( \|x_t - \tilde{m}_t\| \): Estimation error (blue line)
+- \( \|\Sigma_t\|_F \): Frobenius norm of the covariance matrix (black line)
+
+The resulting plot illustrates how the estimator converges to the true state and how the uncertainty (captured by \( \Sigma \)) decreases over time.
+
+> For convergence, it is important that all eigenvalues of matrix \( A \) lie strictly inside the unit circle.
+
+**Author:** Şevket Kaan Alkır  
+**Date:** July 2024
