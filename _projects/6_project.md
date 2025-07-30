@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Kalman Filter State Estimation
-description: Stochastic Kalman upgrade equations implemented to python
+description: Simulation of a discrete-time Kalman filter in Python, illustrating the convergence of the state estimate, estimation error, and covariance norm over time.
 img:
 importance: 4
 category: work
