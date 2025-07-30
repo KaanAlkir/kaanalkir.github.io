@@ -32,6 +32,16 @@ where \\( \Sigma_{t|t-1} \\) is the prediction covariance. The covariance update
 \Sigma_{t+1|t} = A \Sigma_{t|t-1} A^\top + W - (A \Sigma_{t|t-1} C^\top)(C \Sigma_{t|t-1} C^\top + V)^{-1}(C \Sigma_{t|t-1} A^\top).
 \\]
 
+Implementation of these iterations into Python is as follows:
+```python
+v_t = np.random.normal(0, 1, 1)
+w_t = np.random.normal(0, 1, (np.size(A, 0), 1))
+y = C @ x + v_t
+x = A @ x + w_t
+M = A @ M + sigma @ C_T * ((y - C @ A @ M) / (C @ sigma @ C_T + 1))
+sigma = A @ sigma @ A.T + I - A @ sigma @ C_T * ((C * sigma @ A.T) / (C @ sigma @ C_T + 1))
+```
+
 ### Simulation and Visualization
 
 In the simulation, we use the following matrices as an example:
