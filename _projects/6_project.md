@@ -68,10 +68,10 @@ The convergence of the filter is evaluated by tracking the following quantities 
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-6 mt-3 mt-md-0">
-    {% include figure.liquid path="assets//kalman_1.png" title="Kalman Filter – State Norms" class="img-fluid rounded z-depth-1" %}
+    {% include figure.liquid path="assets/img/kalman_1.png" title="NormsKalman Filter – Estimation Error" class="img-fluid rounded z-depth-1" %}
   </div>
   <div class="col-sm-6 mt-3 mt-md-0">
-    {% include figure.liquid path="assets//kalman_2.png" title="Kalman Filter – Estimation Error" class="img-fluid rounded z-depth-1" %}
+    {% include figure.liquid path="assets/img/kalman_2.png" title="Kalman Filter – State " class="img-fluid rounded z-depth-1" %}
   </div>
 </div>
 
