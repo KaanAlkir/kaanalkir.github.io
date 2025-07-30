@@ -9,7 +9,6 @@ math: true  # ✅ Enables MathJax if your theme supports it
 ---
 
 ## Kalman Filter Convergence
-
 This project visualizes the convergence behavior of a Kalman filter applied to a linear dynamical system described by the stochastic equations:
 
 \\[
