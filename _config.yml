@@ -155,8 +155,10 @@ collections:
 # Markdown and syntax highlight
 markdown: kramdown
 highlighter: rouge
+
 kramdown:
   input: GFM
+  math_engine: mathjax     # ✅ Add this line
   syntax_highlighter_opts:
     css_class: "highlight"
     span:
@@ -164,6 +166,10 @@ kramdown:
     block:
       line_numbers: false
       start_line: 1
+
+# Optional: explicitly enable MathJax
+mathjax: true
+
 
 # Includes & excludes
 include: ["_pages", "_scripts"]
