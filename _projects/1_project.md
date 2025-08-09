@@ -23,8 +23,9 @@ related_publications: false
   </div>
 </div>
 
+[🔗 View on GitHub](https://github.com/KaanAlkir/2D-Incompressible-Fluid-Flow){:target="_blank"}
+
 ### Documentation
-[View on GitHub](https://github.com/KaanAlkir/2D-Incompressible-Fluid-Flow){:target="_blank"}
 The following document presents a detailed and formal derivation of the equations underlying the fluid simulation above. It explains how the mathematical model is constructed from physical laws and how these
 are translated into the numerical scheme. The exposition emphasizes both conceptual clarity
 and mathematical precision, making it suitable for readers seeking to understand the theoretical
