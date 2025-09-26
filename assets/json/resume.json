@@ -175,12 +175,12 @@
   ],
   "references": [
     {
-      "name": "<a href='https://web4.bilkent.edu.tr/saldi/' target='_blank'>Naci Saldı</a>",
+      "name": "Naci Saldı",
       "icon": "fa-solid fa-chalkboard-user",
       "reference": "Bilkent University"
     },
     {
-      "name": "<a href='https://mast.queensu.ca/~yuksel/' target='_blank'>Serdar Yüksel</a>",
+      "name": "Serdar Yüksel",
       "icon": "fa-solid fa-chalkboard-user",
       "reference": "Queen's University"
     }
