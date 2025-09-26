@@ -49,8 +49,8 @@
       "institution": "Ankara University",
       "location": "Ankara, Turkey",
       "url": "",
-      "area": "Mathematics",
-      "studyType": "B.Sc.",
+      "area": "",
+      "studyType": "B.Sc. in Mathematics",
       "startDate": "2018",
       "endDate": "2023",
       "score": "3.44/4",
@@ -60,8 +60,8 @@
       "institution": "Bilkent University",
       "location": "Ankara, Turkey",
       "url": "",
-      "area": "Mathematics",
-      "studyType": "M.Sc.",
+      "area": "",
+      "studyType": "M.Sc. in Mathematics",
       "startDate": "2023",
       "endDate": "",
       "score": "3.01/4",
@@ -155,7 +155,7 @@
   "languages": [
     {
       "language": "English",
-      "fluency": "Upper Intermediate",
+      "fluency": "Upper Intermediate (IELTS band 7)",
       "icon": ""
     },
     {
