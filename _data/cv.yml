@@ -52,3 +52,11 @@
   type: list
   contents:
     - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.
+
+- title: Academic References
+  type: time_table
+  contents:
+    - title: <a href="https://web4.bilkent.edu.tr/saldi/">Naci Saldı</a>
+      description: Bilkent University
+    - title: <a href="https://github.com/alshedivat/al-folio">Serdar Yüksel</a>
+      description: Queen's University
