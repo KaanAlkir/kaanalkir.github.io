@@ -32,14 +32,19 @@
 - title: Academic Interests
   type: nested_list
   contents:
-    - title: Topic 1.
+    - title: Current Research Interests 
       items:
-        - Description 1.
-        - Description 2.
-    - title: Topic 2.
+        - Reinforcement Learning (RL) & Inverse Reinforcement Learning (IRL).
+        - Mean-Field Games (MFGs).
+        - Reproducing Kernel Hilbert Spaces methods for RL.
+        - Stochastic control and optimization.
+        
+    - title: Broader Research Interests
       items:
-        - Description 1.
-        - Description 2.
+        - Reinforcement Learning (RL) & Inverse Reinforcement Learning (IRL).
+        - Applications of RL in Complex Systems.
+        - Mathematical AI Theory.
+        - Game Theory & Multi-Agent Systems.
 
 - title: Other Interests
   type: list
