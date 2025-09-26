@@ -175,14 +175,14 @@
   ],
   "references": [
     {
-      "name": "Professor John Doe",
-      "icon": "fa-solid fa-laptop",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
+      "name": "<a href='https://web4.bilkent.edu.tr/saldi/' target='_blank'>Naci Saldı</a>",
+      "icon": "fa-solid fa-chalkboard-user",
+      "reference": "Bilkent University"
     },
     {
-      "name": "Professor John Doe",
-      "icon": "fa-solid fa-thumbtack",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
+      "name": "<a href='https://mast.queensu.ca/~yuksel/' target='_blank'>Serdar Yüksel</a>",
+      "icon": "fa-solid fa-chalkboard-user",
+      "reference": "Queen's University"
     }
   ]
 }
