@@ -8,7 +8,7 @@ nav_order: 6
 ---
 
 
-| Year           | Code      | Course                     | Institution        | Role              |
+| Semester       | Code      | Course                     | Institution        | Role              |
 |----------------|-----------|----------------------------|--------------------|-------------------|
 | Fall 2024/25   | MATH 101  | Calculus I                 | Bilkent University | Teaching Assistant|
 | Spring 2024/25 | MATH 102  | Calculus II                | Bilkent University | Teaching Assistant|
