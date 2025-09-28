@@ -24,15 +24,6 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I'm a mathematics MSc student at Bilkent University and an academic assistant working on Reinforcement Learning, Mean-Field Games, and AI Theory. My research involves combining theoretical models with practical algorithms in decision-making under uncertainty.
+I am a Mathematics MSc student and teaching assistant at Bilkent University, specializing in Inverse Reinforcement Learning (IRL), Mean-Field Games, and Reproducing Kernel Hilbert Space (RKHS) methods. My research focuses on recovering hidden objectives from expert demonstrations and translating them into decision-making models for large populations. Specifically, I study average-reward formulations of IRL in mean-field game settings, employing the maximum entropy principle, convex optimization, and functional analysis in RKHS. I have a paper accepted at the IEEE Conference on Decision and Control (CDC 2025), developing an average-cost IRL framework for mean-field games, and currently I am extending this work in a second paper that models reward functions in infinite-dimensional settings using RKHS. 
 
-I completed my Bachelor's degree at Ankara University and have contributed to multiple academic projects and teaching efforts. Currently, I am preparing for a PhD in artificial intelligence, with a strong focus on mathematical modeling.
-
-## 🔬 Research Interests
-
-- Inverse Reinforcement Learning (IRL)
-- Mean-Field Games and control
-- Kernel methods in AI
-- Variational optimization
-- Quantum computing (curiosity-driven)
-
+I am preparing for a PhD with research interests in Reinforcement Learning (RL) and Inverse Reinforcement Learning (IRL), focusing on the development and analysis of algorithms for complex, large-scale systems. I am particularly interested in applications of RL in multi-agent and networked environments, the theoretical foundations of AI and decision-making, and the study of strategic interactions through game theory and multi-agent systems. My goal is to bridge rigorous mathematical theory with practical algorithmic approaches to advance the understanding and deployment of intelligent decision-making in complex systems.
