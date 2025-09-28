@@ -2,7 +2,7 @@
 layout: about
 title: About
 permalink: /
-subtitle: Bilkent University - Department of Mathematics.
+subtitle: 
 
 profile:
   align: right
