@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-[Paper](https://kaanalkir.github.io/publications/) peer-reviewed and accepted at the IEEE Conference on Decision and Control (CDC 2025).
+[Paper](https://kaanalkir.github.io/publications/) presented at the IEEE Conference on Decision and Control 2025, in Rio de Janeiro.
