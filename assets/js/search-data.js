@@ -3,8 +3,8 @@ const ninja = document.querySelector('ninja-keys');
 
 // add the home and posts menu items
 ninja.data = [{
-    id: "nav-about",
-    title: "About",
+    id: "nav-",
+    title: "",
     section: "Navigation",
     handler: () => {
       window.location.href = "/";
@@ -418,8 +418,8 @@ ninja.data = [{
           section: "News",},{id: "news-attended-the-probability-and-analysis-summer-school-a-two-week-program-at-boğaziçi-university",
           title: 'Attended the “Probability and Analysis Summer School”, a two-week program at Boğaziçi University....',
           description: "",
-          section: "News",},{id: "news-paper-peer-reviewed-and-accepted-at-the-ieee-conference-on-decision-and-control-cdc-2025",
-          title: 'Paper peer-reviewed and accepted at the IEEE Conference on Decision and Control (CDC...',
+          section: "News",},{id: "news-paper-presented-at-the-ieee-conference-on-decision-and-control-2025-in-rio-de-janeiro",
+          title: 'Paper presented at the IEEE Conference on Decision and Control 2025, in Rio...',
           description: "",
           section: "News",},{id: "projects-interactive-fluid-simulation-of-navier-stokes-driven-dynamical-systems-in-2d",
           title: 'Interactive Fluid Simulation of Navier–Stokes Driven Dynamical Systems in 2D',
