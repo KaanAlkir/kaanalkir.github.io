@@ -10,6 +10,7 @@ nav_order: 6
 
 | Semester       | Code      | Course                     | Institution        | Role              |
 |----------------|-----------|----------------------------|--------------------|-------------------|
+| Fall 2025/26   | MATH 225  | Linear Algebra and Differential Equations | Bilkent University | Teaching Assistant|
 | Spring 2025/26 | MATH 102  | Calculus II                | Bilkent University | Teaching Assistant|
 | Fall 2024/25   | MATH 101  | Calculus I                 | Bilkent University | Teaching Assistant|
 | Spring 2024/25 | MATH 102  | Calculus II                | Bilkent University | Teaching Assistant|
