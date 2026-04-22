@@ -29,28 +29,28 @@
       institution: Charles University
       year: 2022
 
-- title: Academic Interests
-  type: nested_list
-  contents:
-    - title: Current Research Interests 
-      items:
-        - Reinforcement Learning (RL) & Inverse Reinforcement Learning (IRL).
-        - Mean-Field Games (MFGs).
-        - Reproducing Kernel Hilbert Spaces methods for RL.
-        - Stochastic control and optimisation.
+#- title: Academic Interests
+#  type: nested_list
+#  contents:
+#    - title: Current Research Interests 
+#      items:
+#        - Reinforcement Learning (RL) & Inverse Reinforcement Learning (IRL).
+#        - Mean-Field Games (MFGs).
+#        - Reproducing Kernel Hilbert Spaces methods for RL.
+#        - Stochastic control and optimisation.
         
-    - title: Broader Research Interests
-      items:
-        - Evolutionary Game Dynamics.
-        - Applications of RL in Complex Systems.
-        - Mathematical AI Theory.
-        - Game Theory & Multi-Agent Systems.
+#    - title: Broader Research Interests
+#      items:
+#        - Evolutionary Game Dynamics.
+#        - Applications of RL in Complex Systems.
+#        - Mathematical AI Theory.
+#        - Game Theory & Multi-Agent Systems.
 
 
-- title: Academic References
-  type: time_table
-  contents:
-    - title: <a href="https://web4.bilkent.edu.tr/saldi/">Naci Saldı</a>
-      description: Bilkent University
-    - title: <a href="https://mast.queensu.ca/~yuksel/">Serdar Yüksel</a>
-      description: Queen's University
+#- title: Academic References
+#  type: time_table
+#  contents:
+#    - title: <a href="https://web4.bilkent.edu.tr/saldi/">Naci Saldı</a>
+#      description: Bilkent University
+#    - title: <a href="https://mast.queensu.ca/~yuksel/">Serdar Yüksel</a>
+#      description: Queen's University
