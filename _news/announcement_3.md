@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Attended the [Probability and Analysis CIMPA Summer School](https://sites.google.com/view/probability-appliedanalysis/home), a two-week program at Boğaziçi University.
+Attended the [Probability and Analysis CIMPA Summer School](https://sites.google.com/view/probability-appliedanalysis/home), a two-week programme at Boğaziçi University.
