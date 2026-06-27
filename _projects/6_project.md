@@ -23,10 +23,10 @@ where \\( w_t \sim \mathcal{N}(0, I) \\) and \\( v_t \sim \mathcal{N}(0, 1) \\) 
 
 
 
-The Kalman filter updates the state estimate \\( \tilde{m}_t = E[x_t \mid y_{0:t}] \\) recursively using:
+The Kalman filter updates the state estimate \\( m_t = E[x_t \mid y_{0:t}] \\) recursively using:
 
 \\[
-\tilde{m}_t = A \tilde{m}_{t-1} + \Sigma_{t \mid t-1} C^\top \left(C \Sigma_{t \mid t-1} C^\top + V\right)^{-1} \left(y_t - C A \tilde{m}_{t-1}\right)
+\tilde{m}_t = A m_{t-1} + \Sigma_{t \mid t-1} C^\top \left(C \Sigma_{t \mid t-1} C^\top + V\right)^{-1} \left(y_t - C A m_{t-1}\right)
 \\]
 
 where \\(\Sigma_{t\mid t-1}\\) is the prediction covariance. The covariance update follows the Riccati recursion:
