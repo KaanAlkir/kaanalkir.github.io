@@ -21,7 +21,7 @@ x_{t+1} = A x_t + w_t, \quad y_t = C x_t + v_t
 
 where \\( w_t \sim \mathcal{N}(0, I) \\) and \\( v_t \sim \mathcal{N}(0, 1) \\) are independent noise terms. The system aims to estimate the hidden state \\( x_t \\) through noisy observations \\( y_t \\), using a recursive update known as the **Kalman filter**.
 
-### Estimator and Riccati Update
+
 
 The Kalman filter updates the state estimate \\( \tilde{m}_t = E[x_t \mid y_{0:t}] \\) recursively using:
 
